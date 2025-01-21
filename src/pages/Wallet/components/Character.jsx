@@ -3,7 +3,7 @@ import coin from '../../../assets/main/coin.png'
 
 const Character = () => {
   return (
-    <section>
+    <section className='mb-16'>
       <div className='w-44 mx-auto text-white text-center'>
         <img src={chara} className='w-full rounded-md' alt='character' />
         <h2 className='text-xl my-3'>John Smith</h2>

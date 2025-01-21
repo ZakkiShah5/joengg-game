@@ -7,7 +7,7 @@ const Wallet = () => {
   return (
     <>
       <RightIcons />
-      <div className='bg-main flex flex-col justify-center items-center mb-24'>
+      <div className='bg-main flex flex-col justify-center items-center'>
         <Character />
         <Menu />
       </div>
