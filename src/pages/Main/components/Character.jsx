@@ -7,8 +7,9 @@ const Character = () => {
       <img
         src={chara}
         alt='chara'
-        className='chara w-72 h-72 rounded-full p-2 border-4 border-purple-500 object-contain'
+        className='chara w-96 h-64 rounded-full p-2 border-4 border-purple-500 object-contain'
       />
+
       <div className='relative'>
         <div className='bg-white w-[255px] py-3 px-3 rounded-3xl'>
           <p className='text-mypurple-600 font-semibold'>
@@ -20,9 +21,7 @@ const Character = () => {
           </div>
         </div>
       </div>
-      <div className='h-96 w-6 flex flex-col justify-end bg-transparent-100 absolute top-1/2 right-1 rounded-2xl transform -translate-x-1/2 -translate-y-1/2'>
-        <div className='bg-mypurple-600 h-20 rounded-b-2xl'></div>
-      </div>
+      
     </div>
   )
 }
