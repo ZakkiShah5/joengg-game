@@ -1,4 +1,4 @@
-import chara from '../../../assets/main/character.png'
+import chara from '../../../assets/videos/chara-idle.gif'
 
 const Character = () => {
   return (
