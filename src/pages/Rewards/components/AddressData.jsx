@@ -17,35 +17,35 @@ const AddressData = () => {
           <div className='flex-1 text-center'>Address</div>
         </div>
         <div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 pt-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>01</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>02</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>03</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>04</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>05</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>06</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>07</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
-          <div className=' px-2 flex justify-between'>
+          <div className=' px-2 pb-2 text-sm flex justify-between'>
             <div className='text-mypurple-600 font-medium flex-none'>08</div>
             <div className='flex-1 text-center'>0x0000000000</div>
           </div>
