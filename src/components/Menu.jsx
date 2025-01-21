@@ -10,7 +10,7 @@ const Menu = () => {
   const activeClass = 'text-white bg-mypurple-600 '
   const normalClass = 'text-mypurple-600 bg-white'
   return (
-    <div className=' flex justify-center absolute left-1/2 transform -translate-x-1/2 bottom-4'>
+    <div className=' flex justify-center absolute left-1/2 transform -translate-x-1/2 bottom-8'>
       <nav className='flex text-sm text-center bg-white rounded-md overflow-hidden'>
         <NavLink
           to='/'
