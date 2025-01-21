@@ -1,8 +1,15 @@
-import React from 'react'
+import '../Main/Main.css'
+import Speaker from '../Ranking/components/Speaker'
+import Back from './components/Back'
+import Holdings from './components/Holdings'
 
 const Box = () => {
   return (
-    <div>Box</div>
+    <div className='bg-main'>
+      <Speaker />
+      <Back />
+      <Holdings />
+    </div>
   )
 }
 
