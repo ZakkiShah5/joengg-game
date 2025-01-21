@@ -1,9 +1,14 @@
 import chara from '../../../assets/videos/chara-idle.gif'
+import '../Main.css'
 
 const Character = () => {
   return (
     <div className='flex justify-center flex-col gap-4 items-center my-20 mx-8'>
-      <img src={chara} alt='chara' className='w-52' />
+      <img
+        src={chara}
+        alt='chara'
+        className='chara w-72 h-72 rounded-full p-2 border-4 border-purple-500 object-contain'
+      />
       <div className='relative'>
         <div className='bg-white w-[255px] py-3 px-3 rounded-3xl'>
           <p className='text-mypurple-600 font-semibold'>
