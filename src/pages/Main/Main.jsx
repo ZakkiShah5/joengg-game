@@ -66,7 +66,7 @@ const Main = () => {
         />
       )}
       {(showMainContent || stage === 3) && (
-        <div className='bg-main relative'>
+        <div className='bg-main'>
           <Icons />
           <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
             <Character />
