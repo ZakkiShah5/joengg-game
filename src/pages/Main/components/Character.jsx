@@ -4,11 +4,13 @@ import '../Main.css'
 const Character = () => {
   return (
     <div className='flex justify-center flex-col gap-4 items-center my-20 mx-8'>
-      <img
-        src={chara}
-        alt='chara'
-        className='chara w-96 h-64 rounded-full p-2 border-4 border-purple-500 object-contain'
-      />
+      <div className='border-2 w-80 border-purple-500 rounded-full'>
+        <img
+          src={chara}
+          alt='chara'
+          className='chara w-80 h-80 rounded-full border-4 border-purple-500 object-contain'
+        />
+      </div>
 
       <div className='relative'>
         <div className='bg-white w-[255px] py-3 px-3 rounded-3xl'>
@@ -21,7 +23,6 @@ const Character = () => {
           </div>
         </div>
       </div>
-      
     </div>
   )
 }
