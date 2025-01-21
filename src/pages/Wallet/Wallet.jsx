@@ -5,9 +5,9 @@ import Character from './components/Character'
 
 const Wallet = () => {
   return (
-    <div className=''>
+    <div>
       <RightIcons />
-      <div className='bg-main mx-auto py-20'>
+      <div className='bg-main flex flex-col justify-center items-center'>
         <Character />
         <Menu />
       </div>
