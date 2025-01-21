@@ -9,7 +9,7 @@ const Character = () => {
         <h2 className='text-xl my-3'>John Smith</h2>
       </div>
       <div className='w-56 mx-auto bg-white h-[0.5px]'></div>
-      <div className='mt-4 w-80 rounded-lg bg-white p-5'>
+      <div className='mt-4 w-80 rounded-lg bg-transparent-200 p-5'>
         <h1 className='text-2xl font-bold text-mypurple-600'>Mecca Crypto</h1>
         <div className='flex my-5 justify-between items-center'>
           <h2 className='text-xl font-bold text-mypurple-600'>Total:</h2>
