@@ -5,7 +5,7 @@ import coin from '../../../assets/main/coin.png'
 
 const Top = () => {
   return (
-    <div className="my-0 mx-8">
+    <div className="mx-8">
         <h1 className="font-bold text-3xl text-white">Ranking</h1>
         <div>
             <div className="relative flex my-7 bg-transparent-300 rounded-xl px-4 py-2 items-center text-mypurple-600 justify-between">

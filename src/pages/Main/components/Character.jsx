@@ -2,7 +2,7 @@ import chara from '../../../assets/main/character.png'
 
 const Character = () => {
   return (
-    <div className='flex justify-center flex-col gap-4 items-center mt-16'>
+    <div className='flex justify-center flex-col gap-4 items-center my-20 mx-8'>
       <img src={chara} alt='chara' className='w-52' />
       <div className='relative'>
         <div className='bg-white w-[255px] py-3 px-3 rounded-3xl'>

@@ -2,7 +2,7 @@ import coin from '../../../assets/main/coin.png'
 
 const Board = () => {
   return (
-    <div className='my-0 mb-10 mx-8 flex gap-2'>
+    <div className='mx-8 flex gap-2'>
         <div className='py-2 flex flex-col gap-1'>
             <div className='bg-white text-mypurple-600 w-6 h-6 flex justify-center items-center rounded-full'>
                 <span>4</span>

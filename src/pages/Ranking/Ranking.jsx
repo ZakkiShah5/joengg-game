@@ -7,7 +7,7 @@ import Speaker from './components/Speaker'
 
 const Ranking = () => {
   return (
-    <div className='bg-main flex justify-center flex-col'>
+    <div className='bg-main py-20'>
         <Speaker />
         <Top />
         <Board />
