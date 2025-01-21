@@ -5,13 +5,13 @@ import Character from './components/Character'
 
 const Wallet = () => {
   return (
-    <div>
+    <>
       <RightIcons />
-      <div className='bg-main flex flex-col justify-center items-center'>
+      <div className='bg-main flex flex-col justify-center items-center mb-24'>
         <Character />
         <Menu />
       </div>
-    </div>
+    </>
   )
 }
 
