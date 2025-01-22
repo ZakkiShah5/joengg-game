@@ -2,6 +2,7 @@ import '../Main/Main.css'
 import Speaker from '../Ranking/components/Speaker'
 import Back from './components/Back'
 import Holdings from './components/Holdings'
+import Levels from './components/Levels'
 
 const Box = () => {
   return (
@@ -9,6 +10,7 @@ const Box = () => {
       <Speaker />
       <Back />
       <Holdings />
+      <Levels />
     </div>
   )
 }
