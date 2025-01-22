@@ -12,7 +12,7 @@ const Back = () => {
         <div className='text-white text-3xl p-2 rounded-full bg-mypurple-600'>
           <GoArrowLeft />
         </div>
-        <h1 className='text-xl font-bold text-mypurple-600'>Mix</h1>
+        <h1 className='text-xl font-bold text-mypurple-600'>Sell</h1>
       </Link>
     </div>
   )

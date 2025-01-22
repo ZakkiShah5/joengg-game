@@ -3,6 +3,7 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom'
 
 import { Box, Main, Mix, My, Ranking, Rewards, Wallet } from './pages'
+import Sell from './pages/Sell/Sell'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path='/rewards' element={<Rewards />} />
       <Route path='/bag' element={<Box />} />
       <Route path='/mix' element={<Mix />} />
+      <Route path='/sell' element={<Sell />} />
     </Routes>
 
   )
