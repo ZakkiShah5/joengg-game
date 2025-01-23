@@ -91,7 +91,7 @@ const Character = () => {
   };
 
   // Calculate background position (moves up gradually during panic state)
-  let backgroundPosition = '';
+  let backgroundPosition = '0 0';
   if (characterState === 'panic') {
     backgroundPosition = '0px -80px'; // Set background position for panic state
   } else if (isTapping) {
