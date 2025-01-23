@@ -1,88 +1,129 @@
-import React, { useState } from 'react'
-import chara from '../../../assets/gif/chara-idle.gif'
-import chara_fly from '../../../assets/gif/chara-fly-bronze.gif'
-import chara_land from '../../../assets/gif/chara-landing.gif'
-import chara_panic from '../../../assets/gif/chara-fall-panic.gif'
-import chara_crash from '../../../assets/gif/chara-crash.gif'
-import chara_dance from '../../../assets/gif/chara-dance.gif'
-import '../Main.css'
+import React, { useState, useEffect } from 'react';
+import chara from '../../../assets/gif/chara-idle.gif';
+import chara_fly from '../../../assets/gif/chara-fly-bronze.gif';
+import chara_land from '../../../assets/gif/chara-landing.gif';
+import chara_panic from '../../../assets/gif/chara-fall-panic.gif';
+import chara_crash from '../../../assets/gif/chara-crash.gif';
+import chara_dance from '../../../assets/gif/chara-dance.gif';
+import '../Main.css';
 
 const Character = () => {
-  const [tapCount, setTapCount] = useState(0)
-  const [characterState, setCharacterState] = useState('idle') // idle, fly, land, panic, crash, dance
-  const [timer, setTimer] = useState(null)
+  const [tapCount, setTapCount] = useState(0);
+  const [characterState, setCharacterState] = useState('idle');
+  const [timer, setTimer] = useState(null);
+  const [isTapping, setIsTapping] = useState(false); // Track if the user is still tapping
 
+  // Handle tap events
   const handleTap = () => {
-    if (tapCount >= 30) return // Disable further taps after 30
+    setIsTapping(true); // User is tapping
+    if (tapCount >= 30) return; // Disable further taps after 30
 
     // Restart flying if the character is panicking or crashing
     if (characterState === 'crash' || characterState === 'panic') {
-      setCharacterState('fly')
+      setCharacterState('fly');
     }
 
     setTapCount(prev => {
-      const newTapCount = prev + 1
+      const newTapCount = prev + 1;
 
       // Transition to land and then dance if 30 taps are reached
       if (newTapCount === 30) {
-        setCharacterState('land')
-        clearTimeout(timer) // Clear any existing inactivity timer
+        setCharacterState('land');
+        clearTimeout(timer); // Clear any existing inactivity timer
         setTimeout(() => {
-          setCharacterState('dance') // Transition back to idle after dancing
-        }, 600)
+          setCharacterState('dance'); // Transition back to idle after dancing
+        }, 600);
       } else {
         // Start flying if not yet reached 30 taps
-        setCharacterState('fly')
+        setCharacterState('fly');
       }
 
-      return newTapCount
-    })
+      return newTapCount;
+    });
 
-    console.log(tapCount)
+    console.log(tapCount);
+
     // Reset the inactivity timer if taps are less than 30
-    if (timer) clearTimeout(timer)
+    if (timer) clearTimeout(timer);
 
     const newTimer = setTimeout(() => {
       if (tapCount < 29) {
-        setCharacterState('crash')
+        setCharacterState('crash');
         setTimeout(() => {
-          if (tapCount < 29) setCharacterState('panic')
-        }, 1000) // Transition to panic after crashing
+          if (tapCount < 29) setCharacterState('panic');
+        }, 1000); // Transition to panic after crashing
       }
-    }, 2000) // 2 seconds of inactivity triggers crash
+    }, 2000); // 2 seconds of inactivity triggers crash
 
-    setTimer(newTimer)
-  }
+    setTimer(newTimer);
+  };
+
+  // Handle inactivity (when the user stops tapping)
+  useEffect(() => {
+    if (isTapping) {
+      return; // Do nothing if the user is still tapping
+    }
+
+    const panicTimeout = setTimeout(() => {
+      if (tapCount < 30) {
+        setCharacterState('panic'); // Transition to panic after inactivity
+      }
+    }, 2000); // After 2 seconds of no taps, the character enters panic mode
+
+    return () => clearTimeout(panicTimeout); // Clean up on each render
+  }, [isTapping, tapCount]);
 
   const getCharacterGif = () => {
     switch (characterState) {
       case 'fly':
-        return chara_fly
+        return chara_fly;
       case 'land':
-        return chara_land
+        return chara_land;
       case 'panic':
-        return chara_panic
+        return chara_panic;
       case 'crash':
-        return chara_crash
+        return chara_crash;
       case 'dance':
-        return chara_dance
+        return chara_dance;
       default:
-        return chara
+        return chara;
     }
-  }
+  };
+
+  // Calculate background position (moves up gradually during panic state)
+  let backgroundPosition = '';
+  if (characterState === 'panic') {
+    backgroundPosition = '0px -80px'; // Set background position for panic state
+  } else if (isTapping) {
+    backgroundPosition = `${tapCount * -5}px ${tapCount * 0.05}px`; // Background moves while tapping
+  } 
+
+  // Character styles for panic state: shrink and move left/bottom
+  const characterStyles = {
+    width: characterState === 'panic' ? `${Math.max(2)}%` : '100%', // Shrink character in panic
+    transform: characterState === 'panic' 
+      ? `translate(${Math.max(-100)}px, ${Math.max(350)}px)` 
+      : 'translate(0, 0)', // Move left and down in panic state
+    transition: 'transform 5s ease, width 5s ease', // Smooth transition for transform and width
+  };
 
   return (
     <div className='flex justify-center flex-col gap-4 items-center my-20 mx-8'>
       <div
-        className={`bg-planet w-80  rounded-full ${
+        className={`bg-planet w-80 rounded-full ${
           tapCount < 30 ? 'cursor-pointer' : 'cursor-not-allowed'
         }`}
         onClick={handleTap}
+        style={{
+          backgroundPosition: backgroundPosition,
+          transition: 'background-position 2s ease-out', // Smooth transition for background position
+        }}
       >
         <img
           src={getCharacterGif()}
           alt='character'
-          className='chara w-80 h-80 rounded-full  object-contain'
+          className='chara w-80 h-80 rounded-full object-contain'
+          style={characterStyles} // Apply dynamic styles for panic effect
         />
       </div>
 
@@ -98,7 +139,7 @@ const Character = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Character
+export default Character;

@@ -9,6 +9,8 @@
 
 .bg-planet{
   background-size: 190%;
+  overflow: hidden;
+  object-fit: cover;
   background-repeat: no-repeat;
   background-position: calc(-210px);
   background-image: url('../../assets/gif/BGwider.png');
