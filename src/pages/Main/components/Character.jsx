@@ -1,15 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react'
-import chara from '../../../assets/gif/3d-idle.gif'
-import chara_fly from '../../../assets/gif/chara-fly-bronze.gif'
-import chara_land from '../../../assets/gif/chara-landing.gif'
-import chara_panic from '../../../assets/gif/chara-fall-panic.gif'
-import chara_crash from '../../../assets/gif/chara-crash.gif'
-import chara_dance from '../../../assets/gif/chara-dance.gif'
-import '../Main.css'
 
 const Character = ({
   tapCount,
-  setTapCount,
   handleTap,
   getCharacterGif,
   characterStyles

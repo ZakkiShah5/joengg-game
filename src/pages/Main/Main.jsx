@@ -111,7 +111,7 @@ const Main = () => {
   const getBackgroundStyle = () => {
     return {
       backgroundPosition:
-        characterState === 'panic' ? '0px -1680px' : `${tapCount * -13}px ${tapCount * -1}px`,
+        characterState === 'panic' ? '0px -1680px' : `${tapCount * -13}px ${tapCount * -2}px`,
       transition:
         characterState === 'panic'
           ? 'background-position 100s ease-out'
