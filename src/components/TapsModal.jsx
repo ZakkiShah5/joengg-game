@@ -1,5 +1,6 @@
 import character from '../assets/bag/bag.png'
 
+
 const TapsModal = ({setShowModal}) => {
   return (
     <div className='text-center fixed  top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2'>
