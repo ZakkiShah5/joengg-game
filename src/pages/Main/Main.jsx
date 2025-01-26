@@ -115,7 +115,7 @@ const Main = () => {
       backgroundPosition:
         characterState === 'panic'
           ? '0px -1680px'
-          : `${tapCount * -14}px ${tapCount * -10}px`,
+          : `${tapCount * -15.5}px ${tapCount * -10}px`,
       transition:
         characterState === 'panic'
           ? 'background-position 100s ease-out'
