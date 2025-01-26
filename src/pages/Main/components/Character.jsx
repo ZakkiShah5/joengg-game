@@ -39,18 +39,29 @@ const Character = ({
           </div>
 
           <div className='relative'>
-            <div className='bg-white w-[255px] py-3 px-3 rounded-3xl'>
-              <p
-                onClick={() => showOrNot()}
-                className='text-mypurple-600 font-semibold'
-              >
-                Claim your Reward in
-              </p>
-              <div className='absolute right-0 top-[-20px] rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
-                <h1 className='text-3xl font-extrabold'>{30 - tapCount}</h1>
-                <p>Taps left!</p>
+            {tapCount === 30 ? (
+              <div className='bg-white text-center w-[255px] py-3 px-3 rounded-3xl'>
+                <p
+                  onClick={() => showOrNot()}
+                  className='text-mypurple-600 font-semibold'
+                >
+                  Claim your Reward now!
+                </p>
               </div>
-            </div>
+            ) : (
+              <div className='bg-white w-[255px] py-3 px-3 rounded-3xl'>
+                <p
+                  onClick={() => showOrNot()}
+                  className='text-mypurple-600 font-semibold'
+                >
+                  Claim your Reward in
+                </p>
+                <div className='absolute right-0 top-[-20px] rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
+                  <h1 className='text-3xl font-extrabold'>{30 - tapCount}</h1>
+                  <p>Taps left!</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

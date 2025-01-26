@@ -19,7 +19,7 @@ const Main = () => {
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
 
-  const handleTap = ()=> {
+  const handleTap = (event)=> {
     if (tapCount >= 30) return // Prevent taps after 30
 
     const { clientX, clientY } = event; // Get tap coordinates
