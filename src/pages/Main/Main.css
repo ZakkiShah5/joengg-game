@@ -54,3 +54,20 @@
     opacity: 1;
   }
 }
+
+@keyframes moveToCenter {
+  from {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+  }
+}
+
+.animated-logo {
+  pointer-events: none;
+}

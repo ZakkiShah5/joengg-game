@@ -15,17 +15,20 @@ import chara_dance from '../../assets/gif/chara-dance.gif'
 
 const Main = () => {
   const [tapCount, setTapCount] = useState(0)
-  const [logoVisible, setLogoVisible] = useState(false)
-  const [logoStyle, setLogoStyle] = useState({})
+  const [logos, setLogos] = useState([]);
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
 
-  const handleTap = event => {
+  const handleTap = ()=> {
     if (tapCount >= 30) return // Prevent taps after 30
 
-    const xPos = event.clientX
-    const yPos = event.clientY
-    // Increment tap count
+    const { clientX, clientY } = event; // Get tap coordinates
+
+    setLogos((prev) => [
+      ...prev,
+      { id: Date.now(), x: clientX, y: clientY, isAnimating: true },
+    ]);
+    
     setTapCount(prev => {
       const newTapCount = prev + 1
 
@@ -39,32 +42,6 @@ const Main = () => {
 
       return newTapCount
     })
-
-    // Animate and show logo
-    setLogoVisible(true)
-    setLogoStyle({
-      opacity: 1,
-      transform: 'translateY(100px) translateX(100px)',
-      left: `${xPos - 150}px`, // Offset for better positioning
-      top: `${yPos - 150}px`, // Offset for better positioning
-
-      position: 'absolute',
-      transition: 'transform 1s ease, opacity 1s ease',
-      zIndex: 9999
-    })
-
-    // Reset logo visibility after animation
-    setTimeout(() => {
-      setLogoStyle({
-        opacity: 0,
-        transform: 'translateY(0) translateX(0)',
-        left: `${xPos - 150}px`, // Keep it at tap position
-        top: `${yPos - 150}px`, // Keep it at tap position
-        position: 'absolute',
-        zIndex: 9999
-      })
-      setTimeout(() => setLogoVisible(false), 500)
-    }, 500)
 
     // Reset inactivity timer
     if (inactivityTimer) clearTimeout(inactivityTimer)
@@ -84,8 +61,6 @@ const Main = () => {
       if (inactivityTimer) clearTimeout(inactivityTimer) // Clean up timer
     }
   }, [inactivityTimer])
-
-  
 
   const getCharacterGif = () => {
     switch (characterState) {
@@ -123,6 +98,10 @@ const Main = () => {
     }
   }
 
+  const handleAnimationEnd = (id) => {
+    setLogos((prev) => prev.filter((logo) => logo.id !== id));
+  };
+
   return (
     <div className='main-container'>
       <div
@@ -142,20 +121,24 @@ const Main = () => {
           />
 
           {/* Animated Logo */}
-          {logoVisible && (
+          {logos.map((logoItem) => (
             <img
+              key={logoItem.id}
               src={logo}
-              alt=''
-              className='w-16 absolute'
+              alt=""
+              className="animated-logo"
               style={{
-                ...logoStyle,
-                transition: 'transform 1s ease, opacity 1s ease'
+                position: 'absolute',
+                top: logoItem.y,
+                left: logoItem.x,
+                width: '50px',
+                height: '50px',
+                animation: `moveToCenter 1s ease`,
               }}
+              onAnimationEnd={() => handleAnimationEnd(logoItem.id)}
             />
-          )}
+          ))}
         </div>
-
-        
 
         {/* Gauge */}
         <div
