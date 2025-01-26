@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu } from '../../components'
 import Character from './components/Character'
 import Icons from './components/Icons'
@@ -20,11 +20,11 @@ const Main = () => {
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
 
-  const handleTap = (event) => {
+  const handleTap = event => {
     if (tapCount >= 30) return // Prevent taps after 30
 
-    const xPos = event.clientX;
-    const yPos = event.clientY;
+    const xPos = event.clientX
+    const yPos = event.clientY
     // Increment tap count
     setTapCount(prev => {
       const newTapCount = prev + 1
@@ -58,8 +58,8 @@ const Main = () => {
       setLogoStyle({
         opacity: 0,
         transform: 'translateY(0) translateX(0)',
-        left: `${xPos -150}px`, // Keep it at tap position
-        top: `${yPos -150}px`, // Keep it at tap position
+        left: `${xPos - 150}px`, // Keep it at tap position
+        top: `${yPos - 150}px`, // Keep it at tap position
         position: 'absolute',
         zIndex: 9999
       })
@@ -84,6 +84,8 @@ const Main = () => {
       if (inactivityTimer) clearTimeout(inactivityTimer) // Clean up timer
     }
   }, [inactivityTimer])
+
+  
 
   const getCharacterGif = () => {
     switch (characterState) {
@@ -111,7 +113,9 @@ const Main = () => {
   const getBackgroundStyle = () => {
     return {
       backgroundPosition:
-        characterState === 'panic' ? '0px -1680px' : `${tapCount * -13}px ${tapCount * -2}px`,
+        characterState === 'panic'
+          ? '0px -1680px'
+          : `${tapCount * -13}px ${tapCount * -2}px`,
       transition:
         characterState === 'panic'
           ? 'background-position 100s ease-out'
@@ -128,7 +132,7 @@ const Main = () => {
         style={getBackgroundStyle()}
       >
         <Icons />
-        <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+        <div className=''>
           <Character
             handleTap={handleTap}
             tapCount={tapCount}
@@ -142,7 +146,7 @@ const Main = () => {
             <img
               src={logo}
               alt=''
-              className='w-10 absolute'
+              className='w-16 absolute'
               style={{
                 ...logoStyle,
                 transition: 'transform 1s ease, opacity 1s ease'
@@ -150,6 +154,8 @@ const Main = () => {
             />
           )}
         </div>
+
+        
 
         {/* Gauge */}
         <div
