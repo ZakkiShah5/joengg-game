@@ -101,7 +101,7 @@ const MixUp = ({ mixSuccess, handleMix, handleBack, isMixing }) => {
           </button>
         ) : (
           <button
-            className='absolute bottom-12 bg-mypurple-600 py-1 rounded-lg text-white text-2xl font-bold w-1/2'
+            className='absolute bottom-4 bg-mypurple-600 py-1 rounded-lg text-white text-2xl font-bold w-1/2'
             onClick={handleBack}
           >
             Back
