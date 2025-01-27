@@ -94,14 +94,14 @@ const MixUp = ({ mixSuccess, handleMix, handleBack, isMixing }) => {
       <div className='mt-3 flex justify-center'>
         {!isMixing ? (
           <button
-            className='absolute bottom-10 bg-mypurple-600 py-1 rounded-lg text-white text-2xl font-bold w-1/2'
+            className=' bg-mypurple-600 py-1 rounded-lg text-white text-2xl font-bold w-1/2'
             onClick={handleMix}
           >
             Mix
           </button>
         ) : (
           <button
-            className='absolute bottom-10 bg-mypurple-600 py-1 rounded-lg text-white text-2xl font-bold w-1/2'
+            className='absolute bottom-12 bg-mypurple-600 py-1 rounded-lg text-white text-2xl font-bold w-1/2'
             onClick={handleBack}
           >
             Back
