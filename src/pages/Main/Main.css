@@ -8,14 +8,13 @@
 }
 
 .bg-planet {
-  background-size: 225% auto;
+  background-size: 215% auto;
   height: 100vh;
   overflow: hidden;
   object-fit: contain;
-  background-repeat: no-repeat, repeat;
-  /* background-repeat: repeat-y; */
-  /* background-position: calc(-210px); */
-  background-image: url('../../assets/gif/bg-planetMecca.png');
+  background-attachment: fixed;
+  background-repeat:  repeat;
+  background-image: url('../../assets/gif/bg-planetMecca2.png');
 }
 
 .bg-video {

@@ -99,7 +99,7 @@ const Main = () => {
 
   const characterStyles = {
     width: characterState === 'panic' ? '75%' : '100%',
-    transform: characterState === 'panic' ? 'translate(30px, 30px)' : 'none',
+    transform: characterState === 'panic' ? 'translate(30px, 30px)' : 'translate(0px, 0px)',
     transition: 'transform 0.5s ease, width 0.5s ease'
   }
 
@@ -108,7 +108,7 @@ const Main = () => {
       backgroundPosition:
         characterState === 'panic'
           ? '0px -1680px'
-          : `${tapCount * -14.2}px ${tapCount * -10}px`,
+          : `${tapCount * -14.2}px ${tapCount * 0.067}px`,
       transition:
         characterState === 'panic'
           ? 'background-position 100s ease-out'
