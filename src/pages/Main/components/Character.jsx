@@ -33,7 +33,7 @@ const Character = ({
               onClick={handleTap}
               src={getCharacterGif()}
               alt='character'
-              className='chara w-80 h-80 rounded-full object-contain'
+              className='chara w-80 h-80  object-contain'
               style={characterStyles}
             />
           </div>

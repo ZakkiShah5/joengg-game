@@ -19,6 +19,24 @@ const Main = () => {
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
 
+  useEffect(() => {
+    // Preload images
+    const imagesToPreload = [
+      chara,
+      chara_fly,
+      chara_land,
+      chara_panic,
+      chara_crash,
+      chara_dance,
+      logo,
+    ];
+
+    imagesToPreload.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []); // Run once on component mount
+
   const handleTap = (event)=> {
     if (tapCount >= 30) return // Prevent taps after 30
 
@@ -133,7 +151,7 @@ const Main = () => {
                 left: logoItem.x,
                 width: '50px',
                 height: '50px',
-                animation: `moveToCenter 1s ease`,
+                animation: `moveToCenter 0.8s ease`,
               }}
               onAnimationEnd={() => handleAnimationEnd(logoItem.id)}
             />
