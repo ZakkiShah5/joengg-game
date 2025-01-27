@@ -4,14 +4,21 @@ import { TapsModal } from '../../../components'
 const Character = ({
   tapCount,
   handleTap,
+  setCharacterState,
   getCharacterGif,
   characterStyles
 }) => {
   const [showModal, setShowModal] = useState(false)
+  const [rewardClaim, setRewardClaim] = useState(false)
 
+  const reward = () => {
+    setShowModal(false)
+    setRewardClaim(true)
+  }
   const showOrNot = () => {
     if (tapCount === 30) {
-      return setShowModal(true)
+      setCharacterState('')
+      setShowModal(true)
     } else {
       setShowModal(false)
     }
@@ -21,7 +28,7 @@ const Character = ({
     <>
       {showModal && (
         <>
-          <TapsModal setShowModal={setShowModal} />
+          <TapsModal setShowModal={setShowModal} reward={reward} />
           <div className='overlay bg-transparent-400 z-30 fixed top-0 left-0 min-h-screen w-full'></div>
         </>
       )}
@@ -41,12 +48,18 @@ const Character = ({
           <div className='relative'>
             {tapCount === 30 ? (
               <div className='bg-white text-center w-[255px] py-3 px-3 rounded-3xl'>
-                <p
-                  onClick={() => showOrNot()}
-                  className='text-mypurple-600 font-semibold'
-                >
-                  Claim your Reward now!
-                </p>
+                {rewardClaim ? (
+                  <p className='text-mypurple-600 font-semibold'>
+                    Reward Claimed!
+                  </p>
+                ) : (
+                  <p
+                    onClick={() => showOrNot()}
+                    className='text-mypurple-600 font-semibold'
+                  >
+                    Claim your Reward now!
+                  </p>
+                )}
               </div>
             ) : (
               <div className='bg-white w-[255px] py-3 px-3 rounded-3xl'>

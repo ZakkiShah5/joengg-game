@@ -20,7 +20,6 @@ const Main = () => {
   const [inactivityTimer, setInactivityTimer] = useState(null)
 
   useEffect(() => {
-    // Preload images
     const imagesToPreload = [
       chara,
       chara_fly,
@@ -133,6 +132,7 @@ const Main = () => {
           <Character
             handleTap={handleTap}
             tapCount={tapCount}
+            setCharacterState={setCharacterState}
             setTapCount={setTapCount}
             getCharacterGif={getCharacterGif}
             characterStyles={characterStyles}

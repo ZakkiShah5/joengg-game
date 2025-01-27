@@ -1,6 +1,6 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Loading from './components/Loading'; 
 import { Box, Main, Mix, My, Ranking, Rewards, Wallet, Sell } from './pages';
 

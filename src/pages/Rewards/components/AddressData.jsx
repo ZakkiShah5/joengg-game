@@ -1,6 +1,6 @@
 const AddressData = () => {
   return (
-    <section className='w-64 mb-20'>
+    <section className='w-80 mb-20'>
       <div className='text-white my-2'>
         <div className='flex justify-between items-center'>
           <h1>My Recommender:</h1>

@@ -22,6 +22,7 @@ const Character = () => {
           </div>
         </div>
         <div className='text-center'>
+          <input type="number" className='mb-3 p-2 rounded-lg outline-mypurple-600' placeholder='Enter Amount' />
           <button className='bg-mypurple-600 text-white py-2 px-6 text-xl font-bold rounded-xl'>
             Withdrawal
           </button>

@@ -1,7 +1,6 @@
 import character from '../assets/bag/bag.png'
 
-
-const TapsModal = ({setShowModal}) => {
+const TapsModal = ({ reward }) => {
   return (
     <div className='text-center fixed  top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2'>
       <div className='bg-white w-80 rounded-xl overflow-hidden text-mypurple-600'>
@@ -11,7 +10,10 @@ const TapsModal = ({setShowModal}) => {
           <img src={character} className='rounded-xl h-24' alt='' />
           <h2 className='text-2xl font-bold'>Stage 2</h2>
           <p className='text-black text-sm mb-2'>MeccaScoin</p>
-          <button onClick={()=> setShowModal(false)} className='bg-mypurple-600 font-bold text-2xl rounded-lg text-white px-2 py-2 w-full'>
+          <button
+            onClick={reward}
+            className='bg-mypurple-600 font-bold text-2xl rounded-lg text-white px-2 py-2 w-full'
+          >
             Get!
           </button>
         </div>
