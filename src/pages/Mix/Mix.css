@@ -1,0 +1,97 @@
+/* Keyframes for items moving to center */
+@keyframes moveToCenter1 {
+    0% {
+        left: 0;
+        top: 30%;
+        transform: translate(0, 0);
+    }
+    100% {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes moveToCenter2 {
+    0% {
+        right: 0;
+        top: 30%;
+        transform: translate(0, 0);
+    }
+    100% {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes moveToCenter3 {
+    0% {
+        left: 0;
+        top: 70%;
+        transform: translate(0, 0);
+    }
+    100% {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes moveToCenter4 {
+    0% {
+        right: 0;
+        top: 70%;
+        transform: translate(0, 0);
+    }
+    100% {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+
+/* Apply animations */
+.animate1 {
+    position: absolute;
+    z-index: 7;
+    animation: moveToCenter1 2s ease forwards;
+}
+
+
+
+.animate2 {
+    position: absolute;
+    z-index: 8;
+    animation: moveToCenter2 2s ease forwards;
+}
+
+.animate3 {
+    position: absolute;
+    z-index: 9;
+    animation: moveToCenter3 2s ease forwards; /* Add movement animation */
+}
+
+.animate4 {
+    position: absolute;
+    z-index: 10;
+    animation: moveToCenter4 2s ease forwards; /* Add movement animation */
+}
+
+/* Hide middle image when the animation occurs */
+.mid-disappear .mid-img {
+    display: none;
+}
+
+@keyframes star {
+    0%{
+        opacity: 0;
+    }100%{
+        opacity: 1;
+    }
+}
+.animateStar{
+    animation: star 1s ease forwards;
+}
