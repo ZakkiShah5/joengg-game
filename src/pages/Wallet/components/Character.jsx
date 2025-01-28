@@ -1,7 +1,8 @@
 import chara from '../../../assets/wallet/chara.png'
 import coin from '../../../assets/main/coin.png'
 
-const Character = () => {
+const Character = ({setShowModal}) => {
+
   return (
     <section className='mb-16'>
       <div className='w-44 mx-auto text-white text-center'>
@@ -22,8 +23,8 @@ const Character = () => {
           </div>
         </div>
         <div className='text-center'>
-          <input type="number" className='mb-3 p-2 rounded-lg outline-mypurple-600' placeholder='Enter Amount' />
-          <button className='bg-mypurple-600 text-white py-2 px-6 text-xl font-bold rounded-xl'>
+          <input type="number" className='mb-3 p-2 rounded-lg outline-mypurple-600' placeholder='Enter Address' />
+          <button onClick={()=> setShowModal(true)} className='bg-mypurple-600 text-white py-2 px-6 text-xl font-bold rounded-xl'>
             Withdrawal
           </button>
         </div>
