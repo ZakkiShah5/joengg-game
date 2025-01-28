@@ -13,9 +13,11 @@ import chara_panic from '../../assets/gif/chara-fall-panic.gif'
 import chara_crash from '../../assets/gif/chara-crash.gif'
 import chara_dance from '../../assets/gif/chara-dance.gif'
 
+import tapSound from '../../assets/sounds/1.touch.ogg'
+
 const Main = () => {
   const [tapCount, setTapCount] = useState(0)
-  const [logos, setLogos] = useState([]);
+  const [logos, setLogos] = useState([])
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
 
@@ -27,25 +29,26 @@ const Main = () => {
       chara_panic,
       chara_crash,
       chara_dance,
-      logo,
-    ];
+      logo
+    ]
 
-    imagesToPreload.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []); // Run once on component mount
+    imagesToPreload.forEach(src => {
+      const img = new Image()
+      img.src = src
+    })
+  }, []) // Run once on component mount
 
-  const handleTap = (event)=> {
+  const handleTap = event => {
     if (tapCount >= 30) return // Prevent taps after 30
+    const audio = new Audio(tapSound)
+    audio.play()
+    const { clientX, clientY } = event // Get tap coordinates
 
-    const { clientX, clientY } = event; // Get tap coordinates
-
-    setLogos((prev) => [
+    setLogos(prev => [
       ...prev,
-      { id: Date.now(), x: clientX, y: clientY, isAnimating: true },
-    ]);
-    
+      { id: Date.now(), x: clientX, y: clientY, isAnimating: true }
+    ])
+
     setTapCount(prev => {
       const newTapCount = prev + 1
 
@@ -98,7 +101,10 @@ const Main = () => {
 
   const characterStyles = {
     width: characterState === 'panic' ? '75%' : '100%',
-    transform: characterState === 'panic' ? 'translate(30px, 30px)' : 'translate(0px, 0px)',
+    transform:
+      characterState === 'panic'
+        ? 'translate(30px, 30px)'
+        : 'translate(0px, 0px)',
     transition: 'transform 0.5s ease, width 0.5s ease'
   }
 
@@ -115,10 +121,10 @@ const Main = () => {
     }
   }
 
-  const handleAnimationEnd = (id) => {
-    setLogos((prev) => prev.filter((logo) => logo.id !== id));
-  };
-  
+  const handleAnimationEnd = id => {
+    setLogos(prev => prev.filter(logo => logo.id !== id))
+  }
+
 
   return (
     <div className='main-container'>
@@ -140,19 +146,19 @@ const Main = () => {
           />
 
           {/* Animated Logo */}
-          {logos.map((logoItem) => (
+          {logos.map(logoItem => (
             <img
               key={logoItem.id}
               src={logo}
-              alt=""
-              className="animated-logo"
+              alt=''
+              className='animated-logo'
               style={{
                 position: 'absolute',
                 top: logoItem.y,
                 left: logoItem.x,
                 width: '50px',
                 height: '50px',
-                animation: `moveToCenter 0.8s ease`,
+                animation: `moveToCenter 0.8s ease`
               }}
               onAnimationEnd={() => handleAnimationEnd(logoItem.id)}
             />

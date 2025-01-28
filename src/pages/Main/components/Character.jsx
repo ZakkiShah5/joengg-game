@@ -70,6 +70,7 @@ const Character = ({
         <div className="flex justify-center flex-col gap-4 items-center my-20 mx-8">
           <div>
             <img
+              
               onClick={handleTap}
               src={getCharacterGif()}
               alt="character"
