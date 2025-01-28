@@ -8,6 +8,7 @@ const RightIcons = () => {
   
   const handleBoxTap = ()=>{
     const audio = new Audio(storageBox);
+    audio.load();
     audio.play();
   }
 

@@ -41,6 +41,7 @@ const Main = () => {
   const handleTap = event => {
     if (tapCount >= 30) return // Prevent taps after 30
     const audio = new Audio(tapSound)
+    audio.load();
     audio.play()
     const { clientX, clientY } = event // Get tap coordinates
 

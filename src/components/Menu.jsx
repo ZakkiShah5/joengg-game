@@ -14,6 +14,7 @@ const Menu = () => {
 
   const handleMenuTap = ()=>{
     const audio = new Audio(menuSound);
+    audio.load();
         audio.play();
   }
   

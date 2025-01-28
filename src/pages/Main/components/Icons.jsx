@@ -10,6 +10,7 @@ import storageBox from '../../../assets/sounds/2.storagebox.ogg'
 const Icons = () => {
   const handleBoxTap = () => {
     const audio = new Audio(storageBox)
+    audio.load();
     audio.play()
   }
   return (
