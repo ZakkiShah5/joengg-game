@@ -118,6 +118,7 @@ const Main = () => {
   const handleAnimationEnd = (id) => {
     setLogos((prev) => prev.filter((logo) => logo.id !== id));
   };
+  
 
   return (
     <div className='main-container'>
