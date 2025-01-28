@@ -25,14 +25,14 @@ const characters = [
   { id: 7, name: 'John Smith', img: chara7 },
   { id: 8, name: 'John Smith', img: chara8 },
   { id: 9, name: 'John Smith', img: chara9 },
-  { id: 10, name: 'John Smith', img: chara10 },
+  { id: 10, name: 'John Smith', img: chara10 }
 ]
 
 const My = () => {
   const [selectedChara, setSelectedChara] = useState(characters[9]) // Default character is chara10
   const [showCharacters, setShowCharacters] = useState(false)
 
-  const handleSelectChara = (chara) => {
+  const handleSelectChara = chara => {
     setSelectedChara(chara)
     setShowCharacters(false)
   }
@@ -56,29 +56,32 @@ const My = () => {
               >
                 <FaEdit />
               </div>
-              <h2 className='text-2xl font-medium my-3'>{selectedChara.name}</h2>
+              <h2 className='text-2xl font-medium my-3'>
+                {selectedChara.name}
+              </h2>
             </div>
             <div className='w-56 mx-auto bg-white h-[0.5px]'></div>
           </div>
-          {showCharacters && (
-            <div className='m-3 grid grid-cols-5 gap-4 mt-4'>
-              {characters.map((chara) => (
-                <div
-                  key={chara.id}
-                  className='cursor-pointer flex flex-col items-center'
-                  onClick={() => handleSelectChara(chara)}
-                >
-                  <img
-                    src={chara.img}
-                    alt={chara.name}
-                    className='w-20 h-20 rounded-md object-contain'
-                  />
-                </div>
-              ))}
-            </div>
-          )}
         </section>
-        <Form />
+        {showCharacters ? (
+          <div className='m-3 grid grid-cols-5 gap-4 mt-4'>
+            {characters.map(chara => (
+              <div
+                key={chara.id}
+                className='cursor-pointer flex flex-col items-center'
+                onClick={() => handleSelectChara(chara)}
+              >
+                <img
+                  src={chara.img}
+                  alt={chara.name}
+                  className='w-20 h-20 rounded-md object-contain'
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Form />
+        )}
       </div>
     </>
   )
