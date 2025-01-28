@@ -108,16 +108,15 @@ const Character = ({
                 </div>
               )
             ) : (
-              <div className="bg-white w-[255px] py-3 px-3 rounded-3xl">
+              <div className="w-[255px] text-center flex flex-col-reverse justify-center gap-5 items-center">
                 <p
                   onClick={() => showOrNot()}
-                  className="text-mypurple-600 font-semibold"
+                  className="text-mypurple-600 py-3 px-4 rounded-3xl bg-white font-semibold"
                 >
-                  Claim your Reward in
+                  Claim your Reward in taps it!
                 </p>
-                <div className="absolute right-0 top-[-20px] rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20">
+                <div className="bg-mypurple-600 border-4  text-white flex flex-col justify-center items-center w-20 h-20 rounded-full">
                   <h1 className="text-3xl font-extrabold">{30 - tapCount}</h1>
-                  <p>Taps left!</p>
                 </div>
               </div>
             )}
