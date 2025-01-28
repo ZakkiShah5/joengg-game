@@ -64,7 +64,7 @@ const My = () => {
           </div>
         </section>
         {showCharacters ? (
-          <div className='m-3 grid grid-cols-5 gap-4 mt-4'>
+          <div className='m-3 grid grid-cols-4 gap-4 mt-4'>
             {characters.map(chara => (
               <div
                 key={chara.id}
