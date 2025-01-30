@@ -7,7 +7,7 @@ const Levels = () => {
       <div className='flex gap-2'>
         <div className='w-1/2 flex justify-center items-center flex-col bg-white'>
           <img src={bag} alt='' />
-          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Level 1</h1>
+          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Stage 1</h1>
           <div className='p-2 w-full flex justify-between items-center gap-2'>
             <button className='bg-mypurple-600 w-full px-4 py-1 text-white rounded-md'><Link to='/mix'>Mix</Link> </button>
             <button className='bg-gray-400 px-4 w-full py-1 text-white rounded-md'><Link to="/sell">Sell</Link></button>
@@ -15,7 +15,7 @@ const Levels = () => {
         </div>
         <div className='w-1/2 flex justify-center items-center flex-col bg-white'>
           <img src={bag} alt='' />
-          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Level 1</h1>
+          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Stage 2</h1>
           <div className='p-2 w-full justify-between items-center flex gap-2'>
             <button className='bg-mypurple-600 px-4 w-full py-1 text-white rounded-md'><Link to='/mix'>Mix</Link> </button>
             <button className='bg-gray-400 px-4 w-full py-1 text-white rounded-md'><Link to="/sell">Sell</Link></button>
@@ -25,7 +25,7 @@ const Levels = () => {
       <div className='flex gap-2'>
         <div className='w-1/2 flex justify-center items-center flex-col bg-white'>
           <img src={bag} alt='' />
-          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Level 1</h1>
+          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Stage 3</h1>
           <div className='p-2 w-full flex justify-between items-center gap-2'>
             <button className='bg-mypurple-600 px-4 w-full py-1 text-white rounded-md'><Link to='/mix'>Mix</Link> </button>
             <button className='bg-gray-400 px-4 w-full py-1 text-white rounded-md'><Link to="/sell">Sell</Link></button>
@@ -33,7 +33,7 @@ const Levels = () => {
         </div>
         <div className='w-1/2 flex justify-center items-center flex-col bg-white'>
           <img src={bag} alt='' />
-          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Level 1</h1>
+          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Stage 4</h1>
           <div className='p-2 w-full flex justify-between items-center gap-2'>
             <button className='bg-mypurple-600 px-4 w-full py-1 text-white rounded-md'><Link to='/mix'>Mix</Link> </button>
             <button className='bg-gray-400 px-4 w-full py-1 text-white rounded-md'><Link to="/sell">Sell</Link></button>
@@ -43,7 +43,7 @@ const Levels = () => {
       <div className='flex gap-2'>
         <div className='w-1/2 flex justify-center items-center flex-col bg-white'>
           <img src={bag} alt='' />
-          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Level 1</h1>
+          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Stage 5</h1>
           <div className='p-2 w-full flex justify-between items-center gap-2'>
             <button className='bg-mypurple-600 px-4 w-full py-1 text-white rounded-md'><Link to='/mix'>Mix</Link> </button>
             <button className='bg-gray-400 px-4 w-full py-1 text-white rounded-md'><Link to="/sell">Sell</Link></button>
@@ -51,7 +51,7 @@ const Levels = () => {
         </div>
         <div className='w-1/2 flex justify-center items-center flex-col bg-white'>
           <img src={bag} alt='' />
-          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Level 1</h1>
+          <h1 className='text-xl my-1 text-mypurple-600 font-bold'>Stage 6</h1>
           <div className='p-2 w-full flex justify-between items-center gap-2'>
             <button className='bg-mypurple-600 px-4 w-full py-1 text-white rounded-md'><Link to='/mix'>Mix</Link> </button>
             <button className='bg-gray-400 px-4 w-full py-1 text-white rounded-md'><Link to="/sell">Sell</Link></button>

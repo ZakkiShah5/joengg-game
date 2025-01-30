@@ -42,7 +42,7 @@ const SellForm = () => {
 
   return (
     <div className='relative mx-auto py-4 px-4 flex flex-col justify-center items-center gap-2'>
-      <h1 className='my-3 text-4xl text-white'>Level 1</h1>
+      <h1 className='my-3 text-4xl text-white'>Stage 1</h1>
       <div className='w-80 flex rounded-3xl overflow-hidden justify-center shadow-xl items-center flex-col bg-white'>
         <img src={bgImg} className='w-full' alt='' />
         <div>
