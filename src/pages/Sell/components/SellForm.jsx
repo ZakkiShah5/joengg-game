@@ -6,7 +6,7 @@ import coin from '../../../assets/main/coin.png';
 import plus from '../../../assets/sell/plus.png';
 import minus from '../../../assets/sell/minus.png';
 import coinSound from '../../../assets/sounds/coins.ogg';
-
+// what's wrong?
 const SellForm = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [quantity, setQuantity] = useState(1);
