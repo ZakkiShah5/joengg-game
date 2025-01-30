@@ -6,7 +6,7 @@ import ranking from '../assets/menu/ranking.png'
 import my from '../assets/menu/my.png'
 import rewards from '../assets/menu/rewards.png'
 
-import menuSound from '../assets/sounds/menu.wav'
+import menuSound from '../assets/sounds/menu.mp3'
 
 const Menu = () => {
   const activeClass = 'text-white bg-mypurple-600 '

@@ -4,9 +4,9 @@ import Speaker from '../Ranking/components/Speaker'
 import RateBoard from './components/RateBoard'
 import MixUp from './components/MixUp'
 
-import mixSoundFile from '../../assets/sounds/3.coalescence.ogg'
-import mixSuccessSoundFile from '../../assets/sounds/5.success.ogg'
-import mixFailSoundFile from '../../assets/sounds/4.fail.wav'
+import mixSoundFile from '../../assets/sounds/3.coalescence.mp3'
+import mixSuccessSoundFile from '../../assets/sounds/5.success.mp3'
+import mixFailSoundFile from '../../assets/sounds/4.fail.mp3'
 
 const Mix = () => {
   const [mixSuccess, setMixSuccess] = useState(null)

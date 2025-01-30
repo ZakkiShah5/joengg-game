@@ -5,7 +5,7 @@ import speaker from '../../../assets/main/speaker.png'
 import screw from '../../../assets/main/screw.png'
 import { Link } from 'react-router-dom'
 
-import storageBox from '../../../assets/sounds/2.storagebox.ogg'
+import storageBox from '../../../assets/sounds/2.storagebox.mp3'
 
 const Icons = () => {
   const handleBoxTap = () => {

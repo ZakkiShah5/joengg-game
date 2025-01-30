@@ -2,7 +2,7 @@ import box from '../assets/main/box.png'
 import telegram from '../assets/main/telegram.png'
 import speaker from '../assets/main/speaker.png'
 import { Link } from 'react-router-dom'
-import storageBox from '../assets/sounds/2.storagebox.ogg'
+import storageBox from '../assets/sounds/2.storagebox.mp3'
 
 const RightIcons = () => {
   

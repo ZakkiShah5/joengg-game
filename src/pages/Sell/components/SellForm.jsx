@@ -5,7 +5,7 @@ import star from '../../../assets/bag/star.png';
 import coin from '../../../assets/main/coin.png';
 import plus from '../../../assets/sell/plus.png';
 import minus from '../../../assets/sell/minus.png';
-import coinSound from '../../../assets/sounds/coinsound.ogg';
+import coinSound from '../../../assets/sounds/coinsound.mp3';
 // what's wrong?
 const SellForm = () => {
   const [isAnimating, setIsAnimating] = useState(false);
