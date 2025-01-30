@@ -137,61 +137,68 @@ const Main = () => {
     setLogos(prev => prev.filter(logo => logo.id !== id))
   }
 
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <div className='main-container'>
-      <div
-        className={`bg-planet ${
-          tapCount < 30 ? 'cursor-pointer' : 'cursor-not-allowed'
-        }`}
-        style={getBackgroundStyle()}
-      >
-        <Icons />
-        <div className=''>
-          <Character
-            handleTap={handleTap}
-            tapCount={tapCount}
-            setCharacterState={setCharacterState}
-            setTapCount={setTapCount}
-            getCharacterGif={getCharacterGif}
-            characterStyles={characterStyles}
-          />
-  
-          {/* Animated Logo */}
-          {logos.map(logoItem => (
-            <img
-              key={logoItem.id}
-              src={logo}
-              alt=''
-              className='animated-logo'
-              style={{
-                position: 'absolute',
-                top: logoItem.y,
-                left: logoItem.x,
-                width: '50px',
-                height: '50px',
-                animation: `moveToCenter 0.8s ease`
-              }}
-              onAnimationEnd={() => handleAnimationEnd(logoItem.id)}
-            />
-          ))}
+  return (
+    <div className="relative">
+      {isLoading && (
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white z-50">
+          <Loading />
         </div>
+      )}
   
-        {/* Gauge */}
+      <div className={`main-container ${isLoading ? 'blur-sm' : ''}`}>
         <div
-          className='h-96 w-6 flex flex-col justify-end bg-gray-200 absolute top-1/2 right-1 rounded-2xl transform -translate-x-1/2 -translate-y-1/2 overflow-hidden cursor-pointer'
-          onClick={handleTap}
+          className={`bg-planet ${
+            tapCount < 30 ? 'cursor-pointer' : 'cursor-not-allowed'
+          }`}
+          style={getBackgroundStyle()}
         >
+          <Icons />
+          <div>
+            <Character
+              handleTap={handleTap}
+              tapCount={tapCount}
+              setCharacterState={setCharacterState}
+              setTapCount={setTapCount}
+              getCharacterGif={getCharacterGif}
+              characterStyles={characterStyles}
+            />
+  
+            {/* Animated Logo */}
+            {logos.map((logoItem) => (
+              <img
+                key={logoItem.id}
+                src={logo}
+                alt=""
+                className="animated-logo"
+                style={{
+                  position: 'absolute',
+                  top: logoItem.y,
+                  left: logoItem.x,
+                  width: '50px',
+                  height: '50px',
+                  animation: `moveToCenter 0.8s ease`,
+                }}
+                onAnimationEnd={() => handleAnimationEnd(logoItem.id)}
+              />
+            ))}
+          </div>
+  
+          {/* Gauge */}
           <div
-            className='bg-mypurple-600 rounded-b-2xl transition-all duration-300'
-            style={{ height: `${tapCount * 3.333}%` }}
-          ></div>
+            className="h-96 w-6 flex flex-col justify-end bg-gray-200 absolute top-1/2 right-1 rounded-2xl transform -translate-x-1/2 -translate-y-1/2 overflow-hidden cursor-pointer"
+            onClick={handleTap}
+          >
+            <div
+              className="bg-mypurple-600 rounded-b-2xl transition-all duration-300"
+              style={{ height: `${tapCount * 3.333}%` }}
+            ></div>
+          </div>
+          <Menu />
         </div>
-        <Menu />
       </div>
     </div>
-  )
+  );
+  
 }  
 
 export default Main
