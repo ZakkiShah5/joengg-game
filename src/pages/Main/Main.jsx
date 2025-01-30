@@ -13,7 +13,7 @@ import chara_panic from '../../assets/gif/chara-fall-panic.gif'
 import chara_crash from '../../assets/gif/chara-crash.gif'
 import chara_dance from '../../assets/gif/chara-dance.gif'
 
-import tapSound from '../../assets/sounds/1.touch.ogg'
+import tapSound from '../../assets/sounds/1.touch.mp3'
 import Loading from '../../components/Loading'
 
 const Main = () => {
