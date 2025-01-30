@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { TapsModal } from "../../../components";
 
+// asd
 const Character = ({
   tapCount,
   handleTap,
