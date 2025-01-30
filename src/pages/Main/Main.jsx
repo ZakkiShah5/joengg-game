@@ -14,13 +14,24 @@ import chara_crash from '../../assets/gif/chara-crash.gif'
 import chara_dance from '../../assets/gif/chara-dance.gif'
 
 import tapSound from '../../assets/sounds/1.touch.ogg'
+import Loading from '../../components/Loading'
 
 const Main = () => {
   const [tapCount, setTapCount] = useState(0)
   const [logos, setLogos] = useState([])
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 4000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  
   useEffect(() => {
     const imagesToPreload = [
       chara,
@@ -41,7 +52,7 @@ const Main = () => {
   const handleTap = event => {
     if (tapCount >= 30) return // Prevent taps after 30
     const audio = new Audio(tapSound)
-    audio.load();
+    audio.load()
     audio.play()
     const { clientX, clientY } = event // Get tap coordinates
 
@@ -126,8 +137,9 @@ const Main = () => {
     setLogos(prev => prev.filter(logo => logo.id !== id))
   }
 
-
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <div className='main-container'>
       <div
         className={`bg-planet ${
@@ -145,7 +157,7 @@ const Main = () => {
             getCharacterGif={getCharacterGif}
             characterStyles={characterStyles}
           />
-
+  
           {/* Animated Logo */}
           {logos.map(logoItem => (
             <img
@@ -165,7 +177,7 @@ const Main = () => {
             />
           ))}
         </div>
-
+  
         {/* Gauge */}
         <div
           className='h-96 w-6 flex flex-col justify-end bg-gray-200 absolute top-1/2 right-1 rounded-2xl transform -translate-x-1/2 -translate-y-1/2 overflow-hidden cursor-pointer'
@@ -180,6 +192,6 @@ const Main = () => {
       </div>
     </div>
   )
-}
+}  
 
 export default Main

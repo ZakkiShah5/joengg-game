@@ -1,23 +1,10 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import Loading from './components/Loading'; 
+
 import { Box, Main, Mix, My, Ranking, Rewards, Wallet, Sell } from './pages';
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 4000);
-
-    return () => clearTimeout(timer); 
-  }, []);
-
-  if (isLoading) {
-    return <Loading />; 
-  }
+  
 
   return (
     <Routes>

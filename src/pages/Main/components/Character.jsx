@@ -109,10 +109,10 @@ const Character = ({
                 </div>
               )
             ) : (
-              <div className="w-[255px] text-center flex flex-col-reverse justify-center gap-5 items-center">
+              <div className="w-[280px] text-center flex flex-col-reverse justify-center gap-5 items-center">
                 <p
                   onClick={() => showOrNot()}
-                  className="text-mypurple-600 py-3 px-4 rounded-3xl bg-white font-semibold"
+                  className="text-mypurple-600 py-3 px-3 rounded-3xl bg-white font-semibold"
                 >
                   Claim your Reward in taps it!
                 </p>
