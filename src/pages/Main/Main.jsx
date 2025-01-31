@@ -22,6 +22,17 @@ const Main = () => {
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [canPlay, setCanPlay] = useState(true);
+
+  useEffect(() => {
+    const lastPlayed = localStorage.getItem('lastPlayedTime');
+    if (lastPlayed) {
+      const timeElapsed = Date.now() - parseInt(lastPlayed, 10);
+      if (timeElapsed < 24 * 60 * 60 * 1000) {
+        setCanPlay(false);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -66,8 +77,11 @@ const Main = () => {
 
       // Character transitions based on taps
       if (newTapCount === 30) {
+        
         setCharacterState('land')
         setTimeout(() => setCharacterState('dance'), 500)
+        localStorage.setItem('lastPlayedTime', Date.now().toString()); // Save play time
+        setCanPlay(false);
       } else {
         setCharacterState('fly')
       }
@@ -90,7 +104,7 @@ const Main = () => {
 
   useEffect(() => {
     return () => {
-      if (inactivityTimer) clearTimeout(inactivityTimer) // Clean up timer
+      if (inactivityTimer) clearTimeout(inactivityTimer) 
     }
   }, [inactivityTimer])
 
@@ -161,6 +175,7 @@ const Main = () => {
               setTapCount={setTapCount}
               getCharacterGif={getCharacterGif}
               characterStyles={characterStyles}
+              canPlay={canPlay}
             />
   
             {/* Animated Logo */}

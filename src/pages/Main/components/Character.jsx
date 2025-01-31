@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { TapsModal } from '../../../components'
 
-// asd
 const Character = ({
   tapCount,
   handleTap,
   setCharacterState,
   getCharacterGif,
-  characterStyles
+  characterStyles,
+  canPlay
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [rewardClaim, setRewardClaim] = useState(false)
@@ -17,10 +17,36 @@ const Character = ({
   const [minutes, setMinutes] = useState(59)
   const [seconds, setSeconds] = useState(59)
 
+  // Check if the user has already claimed the reward and if 24 hours have passed
+  const checkRewardCooldown = () => {
+    const lastClaimedTime = localStorage.getItem('lastClaimedTime')
+    if (lastClaimedTime) {
+      const currentTime = new Date().getTime()
+      const cooldownTime = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+      const timeElapsed = currentTime - lastClaimedTime
+
+      if (timeElapsed < cooldownTime) {
+        const remainingTime = cooldownTime - timeElapsed
+        const hoursLeft = Math.floor(remainingTime / (1000 * 60 * 60))
+        const minutesLeft = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60))
+        const secondsLeft = Math.floor((remainingTime % (1000 * 60)) / 1000)
+
+        setHours(hoursLeft)
+        setMinutes(minutesLeft)
+        setSeconds(secondsLeft)
+        return false
+      }
+    }
+    return true
+  }
+
   // Function to claim reward
   const reward = () => {
+    checkRewardCooldown();
+    localStorage.setItem('lastClaimedTime', new Date().getTime()) // Store the current time
     setShowModal(false)
     setRewardClaim(true)
+    console.log(rewardClaim);
   }
 
   // Function to show modal if tapCount is 30
@@ -35,7 +61,9 @@ const Character = ({
 
   // Timer logic
   useEffect(() => {
-    if (rewardClaim) {
+    const canPlayNow = checkRewardCooldown()
+
+    if (canPlayNow) {
       const timer = setInterval(() => {
         setSeconds(prev => {
           if (prev === 0) {
@@ -62,7 +90,7 @@ const Character = ({
     <>
       {showModal && (
         <>
-          <TapsModal setShowModal={setShowModal} reward={reward} />
+          <TapsModal setShowModal={setShowModal} reward={reward}  />
           <div className='overlay bg-transparent-400 z-30 fixed top-0 left-0 min-h-screen w-full'></div>
         </>
       )}
@@ -82,33 +110,37 @@ const Character = ({
           <div className='relative'>
             {tapCount === 30 ? (
               rewardClaim ? (
-                <div className='flex items-center justify-between text-white text-center w-[300px] py-3 px-3 rounded-3xl'>
-                  <div className='rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
-                    <h1 className='text-3xl font-extrabold'>{hours}</h1>
-                    <p>Hour</p>
+                <div>
+                  <div className='flex items-center justify-between text-white text-center w-[300px] py-3 px-3 rounded-3xl'>
+                    <div className='rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
+                      <h1 className='text-3xl font-extrabold'>{hours}</h1>
+                      <p>Hour</p>
+                    </div>
+                    <div className='text-4xl font-bold'>:</div>
+                    <div className='rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
+                      <h1 className='text-3xl font-extrabold'>{minutes}</h1>
+                      <p>Min</p>
+                    </div>
+                    <div className='text-4xl font-bold'>:</div>
+                    <div className='rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
+                      <h1 className='text-3xl font-extrabold'>{seconds}</h1>
+                      <p>Sec</p>
+                    </div>
                   </div>
-                  <div className='text-4xl font-bold'>:</div>
-                  <div className='rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
-                    <h1 className='text-3xl font-extrabold'>{minutes}</h1>
-                    <p>Min</p>
-                  </div>
-                  <div className='text-4xl font-bold'>:</div>
-                  <div className='rounded-2xl bg-mypurple-600 border-4 border-white text-white flex flex-col justify-center items-center w-20 h-20'>
-                    <h1 className='text-3xl font-extrabold'>{seconds}</h1>
-                    <p>Sec</p>
-                  </div>
+                  <p className='text-center text-white'>You can only play 3 times a day!</p>
                 </div>
               ) : (
                 <div className='flex flex-col justify-center items-center gap-5'>
-                <div className='bg-mypurple-600 border-4  text-white flex flex-col justify-center items-center w-20 h-20 rounded-full'>
-                      <h1 onClick={() => showOrNot()} className='text-lg font-extrabold'>
-                        Claim
-                      </h1>
-                    </div>
-                  <div className='bg-white text-center w-[255px] py-3 px-3 rounded-3xl'>
-                    <p
-                      className='text-mypurple-600 font-semibold'
+                  <div className='bg-mypurple-600 border-4  text-white flex flex-col justify-center items-center w-20 h-20 rounded-full'>
+                    <h1
+                      onClick={() => showOrNot()}
+                      className='text-lg font-extrabold'
                     >
+                      Claim
+                    </h1>
+                  </div>
+                  <div className='bg-white text-center w-[255px] py-3 px-3 rounded-3xl'>
+                    <p className='text-mypurple-600 font-semibold'>
                       Claim your Reward now!
                     </p>
                   </div>

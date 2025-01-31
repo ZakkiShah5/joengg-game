@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import bag from '../../../assets/bag/bag.png'
+
 import stage1 from '../../../assets/stages/stage1.png'
 import stage2 from '../../../assets/stages/stage2.png'
 import stage3 from '../../../assets/stages/stage3.png'
