@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import storageBox from '../assets/sounds/2.storagebox.mp3'
 
 import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi'
-import { useState } from 'react'
+import { useMute } from '../Context/VolumeContext'
 
 const RightIcons = () => {
-  const [volume, setVolume] = useState(true)
+  const {volume, setVolume} = useMute();
 
   const handleBoxTap = () => {
     if (volume) {

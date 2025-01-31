@@ -1,44 +1,48 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import bgImg from '../../../assets/bag/bag.png';
-import star from '../../../assets/bag/star.png';
-import coin from '../../../assets/main/coin.png';
-import plus from '../../../assets/sell/plus.png';
-import minus from '../../../assets/sell/minus.png';
-import coinSound from '../../../assets/sounds/coinsound.mp3';
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import bgImg from '../../../assets/bag/bag.png'
+import star from '../../../assets/bag/star.png'
+import coin from '../../../assets/main/coin.png'
+import plus from '../../../assets/sell/plus.png'
+import minus from '../../../assets/sell/minus.png'
+import coinSound from '../../../assets/sounds/coinsound.mp3'
+import { useMute } from '../../../Context/VolumeContext'
 // what's wrong?
 const SellForm = () => {
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const price = 120;
-  const maxQuantity = 5;
-  
-  const handleAnimation = (e) => {
-    e.preventDefault();
-    const audio = new Audio(coinSound);
-    audio.load();
-    audio.play();
-    setIsAnimating(true);
+  const { volume } = useMute()
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [quantity, setQuantity] = useState(1)
+  const price = 120
+  const maxQuantity = 5
+
+  const handleAnimation = e => {
+    e.preventDefault()
+    if (volume) {
+      const audio = new Audio(coinSound)
+      audio.load()
+      audio.play()
+    }
+    setIsAnimating(true)
     setTimeout(() => {
-      setIsAnimating(false);
-    }, 1500);
-  };
+      setIsAnimating(false)
+    }, 1500)
+  }
 
   const increaseQuantity = () => {
     if (quantity < maxQuantity) {
-      setQuantity(quantity + 1);
+      setQuantity(quantity + 1)
     }
-  };
+  }
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      setQuantity(quantity - 1)
     }
-  };
+  }
 
   const setMaxQuantity = () => {
-    setQuantity(maxQuantity);
-  };
+    setQuantity(maxQuantity)
+  }
 
   return (
     <div className='relative mx-auto py-4 px-4 flex flex-col justify-center items-center gap-2'>
@@ -65,11 +69,23 @@ const SellForm = () => {
           </div>
           <div className='text-center mr-5'>
             <div className='flex items-center relative text-3xl'>
-              <img src={minus} className='w-11 absolute left-[-30px] cursor-pointer' alt='' onClick={decreaseQuantity} />
+              <img
+                src={minus}
+                className='w-11 absolute left-[-30px] cursor-pointer'
+                alt=''
+                onClick={decreaseQuantity}
+              />
               <span className='bg-purple-900 w-14 text-white'>{quantity}</span>
-              <img src={plus} className='w-11 absolute right-[-30px] cursor-pointer' alt='' onClick={increaseQuantity} />
+              <img
+                src={plus}
+                className='w-11 absolute right-[-30px] cursor-pointer'
+                alt=''
+                onClick={increaseQuantity}
+              />
             </div>
-            <span className='cursor-pointer' onClick={setMaxQuantity}>Max</span>
+            <span className='cursor-pointer' onClick={setMaxQuantity}>
+              Max
+            </span>
           </div>
         </div>
 
@@ -111,7 +127,7 @@ const SellForm = () => {
         <p>Exchangeable from a minimum of 5</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SellForm;
+export default SellForm

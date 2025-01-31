@@ -1,15 +1,9 @@
 import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi'
-import { useState } from 'react'
+import { useMute } from '../../../Context/VolumeContext'
 
 const Speaker = () => {
-  const [volume, setVolume] = useState(true)
-  const handleBoxTap = () => {
-    if (volume) {
-      const audio = new Audio(storageBox)
-      audio.load()
-      audio.play()
-    }
-  }
+  const {volume, setVolume} = useMute()
+  
   const handleVol = () => {
     setVolume(prev => !prev)
   }

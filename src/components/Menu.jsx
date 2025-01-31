@@ -7,17 +7,20 @@ import my from '../assets/menu/my.png'
 import rewards from '../assets/menu/rewards.png'
 
 import menuSound from '../assets/sounds/menu.mp3'
+import { useMute } from '../Context/VolumeContext'
 
 const Menu = () => {
   const activeClass = 'text-white bg-mypurple-600 '
   const normalClass = 'text-mypurple-600 bg-white'
 
-  const handleMenuTap = ()=>{
-    const audio = new Audio(menuSound);
-    audio.load();
-        audio.play();
+  const { volume } = useMute()
+  const handleMenuTap = () => {
+    if (volume) {
+      const audio = new Audio(menuSound)
+      audio.load()
+      audio.play()
+    }
   }
-  
 
   return (
     <div className=' flex justify-center absolute left-1/2 transform -translate-x-1/2 bottom-2'>
