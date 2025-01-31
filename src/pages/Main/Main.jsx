@@ -15,39 +15,40 @@ import chara_dance from '../../assets/gif/chara-dance.gif'
 
 import tapSound from '../../assets/sounds/1.touch.mp3'
 import Loading from '../../components/Loading'
+import { useMute } from '../../Context/VolumeContext'
 
 const Main = () => {
+  const { volume } = useMute()
   const [tapCount, setTapCount] = useState(0)
   const [logos, setLogos] = useState([])
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
   const [isLoading, setIsLoading] = useState(() => {
-    return localStorage.getItem("hasVisited") ? false : true;
-  });
-  const [canPlay, setCanPlay] = useState(true);
+    return localStorage.getItem('hasVisited') ? false : true
+  })
+  const [canPlay, setCanPlay] = useState(true)
 
   useEffect(() => {
-    const lastPlayed = localStorage.getItem('lastPlayedTime');
+    const lastPlayed = localStorage.getItem('lastPlayedTime')
     if (lastPlayed) {
-      const timeElapsed = Date.now() - parseInt(lastPlayed, 10);
+      const timeElapsed = Date.now() - parseInt(lastPlayed, 10)
       if (timeElapsed < 24 * 60 * 60 * 1000) {
-        setCanPlay(false);
+        setCanPlay(false)
       }
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    if (!localStorage.getItem("hasVisited")) {
+    if (!localStorage.getItem('hasVisited')) {
       const timer = setTimeout(() => {
-        setIsLoading(false);
-        localStorage.setItem("hasVisited", "true");
-      }, 4000);
+        setIsLoading(false)
+        localStorage.setItem('hasVisited', 'true')
+      }, 4000)
 
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     }
-  }, []);
+  }, [])
 
-  
   useEffect(() => {
     const imagesToPreload = [
       chara,
@@ -67,9 +68,11 @@ const Main = () => {
 
   const handleTap = event => {
     if (tapCount >= 30) return // Prevent taps after 30
-    const audio = new Audio(tapSound)
-    audio.load()
-    audio.play()
+    if (volume) {
+      const audio = new Audio(tapSound)
+      audio.load()
+      audio.play()
+    }
     const { clientX, clientY } = event // Get tap coordinates
 
     setLogos(prev => [
@@ -84,8 +87,8 @@ const Main = () => {
       if (newTapCount === 30) {
         setCharacterState('land')
         setTimeout(() => setCharacterState('dance'), 500)
-        localStorage.setItem('lastPlayedTime', Date.now().toString()); // Save play time
-        setCanPlay(false);
+        localStorage.setItem('lastPlayedTime', Date.now().toString()) // Save play time
+        setCanPlay(false)
       } else {
         setCharacterState('fly')
       }
@@ -108,7 +111,7 @@ const Main = () => {
 
   useEffect(() => {
     return () => {
-      if (inactivityTimer) clearTimeout(inactivityTimer) 
+      if (inactivityTimer) clearTimeout(inactivityTimer)
     }
   }, [inactivityTimer])
 
@@ -156,13 +159,13 @@ const Main = () => {
   }
 
   return (
-    <div className="relative">
+    <div className='relative'>
       {isLoading && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white z-50">
+        <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center bg-white z-50'>
           <Loading />
         </div>
       )}
-  
+
       <div className={`main-container ${isLoading ? 'blur-sm' : ''}`}>
         <div
           className={`preload ${
@@ -181,34 +184,34 @@ const Main = () => {
               characterStyles={characterStyles}
               canPlay={canPlay}
             />
-  
+
             {/* Animated Logo */}
-            {logos.map((logoItem) => (
+            {logos.map(logoItem => (
               <img
                 key={logoItem.id}
                 src={logo}
-                alt=""
-                className="animated-logo"
+                alt=''
+                className='animated-logo'
                 style={{
                   position: 'absolute',
                   top: logoItem.y,
                   left: logoItem.x,
                   width: '50px',
                   height: '50px',
-                  animation: `moveToCenter 0.8s ease`,
+                  animation: `moveToCenter 0.8s ease`
                 }}
                 onAnimationEnd={() => handleAnimationEnd(logoItem.id)}
               />
             ))}
           </div>
-  
+
           {/* Gauge */}
           <div
-            className="h-96 w-6 flex flex-col justify-end bg-gray-200 absolute top-1/2 right-1 rounded-2xl transform -translate-x-1/2 -translate-y-1/2 overflow-hidden cursor-pointer"
+            className='h-96 w-6 flex flex-col justify-end bg-gray-200 absolute top-1/2 right-1 rounded-2xl transform -translate-x-1/2 -translate-y-1/2 overflow-hidden cursor-pointer'
             onClick={handleTap}
           >
             <div
-              className="bg-mypurple-600 rounded-b-2xl transition-all duration-300"
+              className='bg-mypurple-600 rounded-b-2xl transition-all duration-300'
               style={{ height: `${tapCount * 3.333}%` }}
             ></div>
           </div>
@@ -216,8 +219,7 @@ const Main = () => {
         </div>
       </div>
     </div>
-  );
-  
-}  
+  )
+}
 
 export default Main

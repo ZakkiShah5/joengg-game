@@ -6,8 +6,7 @@ const Character = ({
   handleTap,
   setCharacterState,
   getCharacterGif,
-  characterStyles,
-  canPlay
+  characterStyles
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [rewardClaim, setRewardClaim] = useState(false)
