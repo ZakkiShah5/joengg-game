@@ -1,17 +1,24 @@
 import coin from '../../../assets/main/coin.png'
 import box from '../../../assets/main/box.png'
 import telegram from '../../../assets/main/telegram.png'
-import speaker from '../../../assets/main/speaker.png'
 import screw from '../../../assets/main/screw.png'
 import { Link } from 'react-router-dom'
 
+import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi'
 import storageBox from '../../../assets/sounds/2.storagebox.mp3'
+import { useState } from 'react'
 
 const Icons = () => {
+  const [volume, setVolume] = useState(true)
   const handleBoxTap = () => {
-    const audio = new Audio(storageBox)
-    audio.load();
-    audio.play()
+    if (volume) {
+      const audio = new Audio(storageBox)
+      audio.load()
+      audio.play()
+    }
+  }
+  const handleVol = () => {
+    setVolume(prev => !prev)
   }
   return (
     <div className=''>
@@ -28,8 +35,11 @@ const Icons = () => {
           <div className='bg-white h-14 flex items-center justify-center w-14 rounded-full'>
             <img src={telegram} alt='' className='w-8' />
           </div>
-          <div className='bg-white h-14 flex items-center justify-center w-14 rounded-full'>
-            <img src={speaker} alt='' className='w-8' />
+          <div
+            onClick={handleVol}
+            className='text-4xl text-mypurple-600 bg-white h-14 flex items-center justify-center w-14 rounded-full'
+          >
+            {volume ? <HiVolumeUp /> : <HiVolumeOff />}
           </div>
         </div>
       </div>

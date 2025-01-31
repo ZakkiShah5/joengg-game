@@ -1,15 +1,23 @@
 import box from '../assets/main/box.png'
 import telegram from '../assets/main/telegram.png'
-import speaker from '../assets/main/speaker.png'
 import { Link } from 'react-router-dom'
 import storageBox from '../assets/sounds/2.storagebox.mp3'
 
+import { HiVolumeUp, HiVolumeOff } from 'react-icons/hi'
+import { useState } from 'react'
+
 const RightIcons = () => {
-  
-  const handleBoxTap = ()=>{
-    const audio = new Audio(storageBox);
-    audio.load();
-    audio.play();
+  const [volume, setVolume] = useState(true)
+
+  const handleBoxTap = () => {
+    if (volume) {
+      const audio = new Audio(storageBox)
+      audio.load()
+      audio.play()
+    }
+  }
+  const handleVol = () => {
+    setVolume(prev => !prev)
   }
 
   return (
@@ -17,14 +25,21 @@ const RightIcons = () => {
       <div className='flex flex-row p-3 pt-5 absolute right-0'>
         <div className='flex-1'></div>
         <div className='flex gap-3'>
-          <Link onClick={handleBoxTap} to='/bag' className='bg-white h-14 flex items-center justify-center w-14 rounded-full'>
+          <Link
+            onClick={handleBoxTap}
+            to='/bag'
+            className='bg-white h-14 flex items-center justify-center w-14 rounded-full'
+          >
             <img src={box} alt='' className='w-8' />
           </Link>
           <div className='bg-white h-14 flex items-center justify-center w-14 rounded-full'>
             <img src={telegram} alt='' className='w-8' />
           </div>
-          <div className='bg-white h-14 flex items-center justify-center w-14 rounded-full'>
-            <img src={speaker} alt='' className='w-8' />
+          <div
+            onClick={handleVol}
+            className='text-4xl text-mypurple-600 bg-white h-14 flex items-center justify-center w-14 rounded-full'
+          >
+            {volume ? <HiVolumeUp /> : <HiVolumeOff />}
           </div>
         </div>
       </div>

@@ -21,7 +21,9 @@ const Main = () => {
   const [logos, setLogos] = useState([])
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(() => {
+    return localStorage.getItem("hasVisited") ? false : true;
+  });
   const [canPlay, setCanPlay] = useState(true);
 
   useEffect(() => {
@@ -35,12 +37,15 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 4000)
+    if (!localStorage.getItem("hasVisited")) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        localStorage.setItem("hasVisited", "true");
+      }, 4000);
 
-    return () => clearTimeout(timer)
-  }, [])
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   
   useEffect(() => {
@@ -77,7 +82,6 @@ const Main = () => {
 
       // Character transitions based on taps
       if (newTapCount === 30) {
-        
         setCharacterState('land')
         setTimeout(() => setCharacterState('dance'), 500)
         localStorage.setItem('lastPlayedTime', Date.now().toString()); // Save play time
@@ -161,7 +165,7 @@ const Main = () => {
   
       <div className={`main-container ${isLoading ? 'blur-sm' : ''}`}>
         <div
-          className={`bg-planet ${
+          className={`preload ${
             tapCount < 30 ? 'cursor-pointer' : 'cursor-not-allowed'
           }`}
           style={getBackgroundStyle()}
