@@ -33,10 +33,10 @@ const Mix = () => {
     setMixSuccess(success)
 
     if (success) {
-      mixSuccessSound.current.onended = () => setIsMixing(false)
+      // mixSuccessSound.current.onended = () => setIsMixing(false)
       playSound(mixSuccessSound)
     } else {
-      mixFailSound.current.onended = () => setIsMixing(false)
+      // mixFailSound.current.onended = () => setIsMixing(false)
       playSound(mixFailSound)
     }
   }
