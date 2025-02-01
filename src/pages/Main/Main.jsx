@@ -68,6 +68,7 @@ const Main = () => {
 
   const handleTap = event => {
     if (tapCount >= 30) return // Prevent taps after 30
+    localStorage.setItem("session_id", "abcdef123456");
     if (volume) {
       const audio = new Audio(tapSound)
       audio.load()
