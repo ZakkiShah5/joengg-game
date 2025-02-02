@@ -60,23 +60,31 @@ const Main = () => {
     }
   }, [])
 
+  const preloadAssets = (assetList) => {
+    assetList.forEach((src) => {
+      if (src.endsWith('.mp3')) {
+        const audio = new Audio(src);
+        audio.load();
+      } else {
+        const img = new Image();
+        img.src = src;
+      }
+    });
+  };
+
   useEffect(() => {
-    const imagesToPreload = [
+    preloadAssets([
       chara,
       chara_fly,
       chara_land,
       chara_panic,
       chara_crash,
       chara_dance,
-      logo
-    ]
-
-    imagesToPreload.forEach(src => {
-      const img = new Image()
-      img.src = src
-    })
-  }, []) // Run once on component mount
-
+      logo,
+      tapSound,
+    ]);
+  }, []);
+  
   const loginUser = async () => {
     try {
       const response = await api.post("/auth/login", {
@@ -165,13 +173,13 @@ const Main = () => {
     } catch (error) {
       console.error("❌ Error sending tap:", error.response?.status, error.response?.data);
 
-      if (error.response?.status === 401) {
-        console.log("⚠️ Unauthorized request. Re-authenticating...");
-        localStorage.removeItem("authToken");
-        await loginUser();
-      } else {
-        alert("❌ Unexpected error. Please check the console for details.");
-      }
+      // if (error.response?.status === 401) {
+      //   console.log("⚠️ Unauthorized request. Re-authenticating...");
+      //   localStorage.removeItem("authToken");
+      //   await loginUser();
+      // } else {
+      //   alert("❌ Unexpected error. Please check the console for details.");
+      // }
     }
 
     if (inactivityTimer) clearTimeout(inactivityTimer);
@@ -243,7 +251,16 @@ const Main = () => {
       // Make the API call to claim the rewards
       const response = await api.post("/game/claim", {}, { headers: { Authorization: session } });
   
-      console.log(response)
+      if (response.data.success) {
+        // Reward claimed successfully
+        alert("🎉 Rewards claimed successfully!");
+        setTapCount(0); // Reset tap count after claiming rewards
+      } else if (response.data.error === 'No eligible round to claim') {
+        // Handle case where there is no eligible round
+        alert("❌ No eligible round to claim rewards. Please try again later.");
+      } else {
+        alert("❌ Error claiming rewards. Please try again.");
+      }
     } catch (error) {
       console.error("❌ Error claiming rewards:", error);
   
