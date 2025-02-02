@@ -4,6 +4,7 @@ import Character from './components/Character'
 import Icons from './components/Icons'
 import './Main.css'
 
+import api from '../../api'
 import logo from '../../assets/main/logo.png'
 
 import chara from '../../assets/gif/3d-idle.gif'
@@ -23,10 +24,20 @@ const Main = () => {
   const [logos, setLogos] = useState([])
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
+  const [wait, setWait] = useState(null);
+  const [session, setSession] = useState(localStorage.getItem("authToken"));
   const [isLoading, setIsLoading] = useState(() => {
     return localStorage.getItem('hasVisited') ? false : true
   })
   const [canPlay, setCanPlay] = useState(true)
+
+  useEffect(() => {
+    if (session) {
+      fetchGameStatus(session);
+    } else {
+      loginUser();
+    }
+  }, []);
 
   useEffect(() => {
     const lastPlayed = localStorage.getItem('lastPlayedTime')
@@ -66,49 +77,114 @@ const Main = () => {
     })
   }, []) // Run once on component mount
 
-  const handleTap = event => {
-    if (tapCount >= 30) return // Prevent taps after 30
-    localStorage.setItem("session_id", "abcdef123456");
-    if (volume) {
-      const audio = new Audio(tapSound)
-      audio.load()
-      audio.play()
+  const loginUser = async () => {
+    try {
+      const response = await api.post("/auth/login", {
+        security_code: "joasdf8921kljds",
+        telegram_id: 10,
+      });
+  
+      if (response.data.sessionId) {
+        const sessionId = response.data.sessionId;
+        localStorage.setItem("authToken", sessionId);
+        console.log("✅ Stored New Session ID:", sessionId);
+  
+        fetchGameStatus(); // Fetch game status after logging in
+      } else {
+        console.error("❌ Login failed: No session ID returned.");
+      }
+    } catch (error) {
+      console.error("❌ Login error:", error.response?.data || error.message);
     }
-    const { clientX, clientY } = event // Get tap coordinates
+  };
+  
+  
+  const fetchGameStatus = async (token) => {
+    try {
+      const response = await api.get("/game/current", {
+        headers: { Authorization: token },
+      });
+  
+      console.log("🔹 Game Status:", response.data);
+  
+      if (response.data.active) {
+        setTapCount(response.data.active.taps);
+      } else {
+        const waitTime = response.data.waitTime;
+        const hours = Math.floor(waitTime / 3600000);
+        const minutes = Math.floor((waitTime % 3600000) / 60000);
+        const seconds = Math.floor((waitTime % 60000) / 1000);
+  
+        setWait(waitTime);
+        alert(`Game is not active. Please wait for: ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
+        setCanPlay(false); // Disable playing until the game is active again
+      }
+    } catch (error) {
+      console.error("❌ Error fetching game status:", error.response?.status, error.response?.data);
+  
+      if (error.response?.status === 401 || error.response?.data?.message === "Invalid session ID") {
+        console.log("⚠️ Invalid session detected. Re-authenticating...");
+        loginUser();
+      }
+    }
+  };
+  
+  
 
-    setLogos(prev => [
-      ...prev,
-      { id: Date.now(), x: clientX, y: clientY, isAnimating: true }
-    ])
+  const handleTap = async (event) => {
+    if (tapCount >= 30 || !session) return;
+
+    if (volume) {
+      const audio = new Audio(tapSound);
+      audio.load();
+      audio.play();
+    }
+
+    const { clientX, clientY } = event;
+
+    setLogos(prev => [...prev, { id: Date.now(), x: clientX, y: clientY, isAnimating: true }]);
 
     setTapCount(prev => {
-      const newTapCount = prev + 1
+      const newTapCount = prev + 1;
 
-      // Character transitions based on taps
       if (newTapCount === 30) {
-        setCharacterState('land')
-        setTimeout(() => setCharacterState('dance'), 500)
-        localStorage.setItem('lastPlayedTime', Date.now().toString()) // Save play time
-        setCanPlay(false)
+        setCharacterState('land');
+        setTimeout(() => setCharacterState('dance'), 500);
+        localStorage.setItem('lastPlayedTime', Date.now().toString());
+        setCanPlay(false);
       } else {
-        setCharacterState('fly')
+        setCharacterState('fly');
       }
 
-      return newTapCount
-    })
+      return newTapCount;
+    });
 
-    // Reset inactivity timer
-    if (inactivityTimer) clearTimeout(inactivityTimer)
+    try {
+      const response = await api.post("/game/tap", { taps: 1 }, { headers: { Authorization: session } });
+      console.log("✅ Tap sent successfully!", response.data);
+    } catch (error) {
+      console.error("❌ Error sending tap:", error.response?.status, error.response?.data);
+
+      if (error.response?.status === 401) {
+        console.log("⚠️ Unauthorized request. Re-authenticating...");
+        localStorage.removeItem("authToken");
+        await loginUser();
+      } else {
+        alert("❌ Unexpected error. Please check the console for details.");
+      }
+    }
+
+    if (inactivityTimer) clearTimeout(inactivityTimer);
 
     const timer = setTimeout(() => {
       if (tapCount < 29) {
-        setCharacterState('crash')
-        setTimeout(() => setCharacterState('panic'), 1000)
+        setCharacterState('crash');
+        setTimeout(() => setCharacterState('panic'), 1000);
       }
-    }, 2000) // 2 seconds of inactivity
+    }, 2000);
 
-    setInactivityTimer(timer)
-  }
+    setInactivityTimer(timer);
+  };
 
   useEffect(() => {
     return () => {
@@ -155,6 +231,33 @@ const Main = () => {
     }
   }
 
+ 
+  
+  const handleClaim = async () => {
+    if (!session) {
+      alert("⚠️ You must be logged in to claim rewards.");
+      return;
+    }
+  
+    try {
+      // Make the API call to claim the rewards
+      const response = await api.post("/game/claim", {}, { headers: { Authorization: session } });
+  
+      console.log(response)
+    } catch (error) {
+      console.error("❌ Error claiming rewards:", error);
+  
+      // Handle various error cases
+      if (error.response?.status === 401) {
+        console.log("⚠️ Unauthorized request. Re-authenticating...");
+        loginUser(); // Trigger re-authentication if the session is expired or invalid
+      } else {
+        alert("❌ Unexpected error. Please try again later.");
+      }
+    }
+  };
+  
+
   const handleAnimationEnd = id => {
     setLogos(prev => prev.filter(logo => logo.id !== id))
   }
@@ -184,6 +287,8 @@ const Main = () => {
               getCharacterGif={getCharacterGif}
               characterStyles={characterStyles}
               canPlay={canPlay}
+              handleClaim={handleClaim}
+              wait={wait}
             />
 
             {/* Animated Logo */}

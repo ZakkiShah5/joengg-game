@@ -6,50 +6,51 @@ const Character = ({
   handleTap,
   setCharacterState,
   getCharacterGif,
-  characterStyles
+  characterStyles,
+  handleClaim,
+  wait
 }) => {
   const [showModal, setShowModal] = useState(false)
   const [rewardClaim, setRewardClaim] = useState(false)
 
-  // Timer state
-  const [hours, setHours] = useState(23)
-  const [minutes, setMinutes] = useState(59)
-  const [seconds, setSeconds] = useState(59)
+  const [hours, setHours] = useState(0)
+  const [minutes, setMinutes] = useState(0)
+  const [seconds, setSeconds] = useState(0)
 
-  // Check if the user has already claimed the reward and if 24 hours have passed
-  const checkRewardCooldown = () => {
-    const lastClaimedTime = localStorage.getItem('lastClaimedTime')
-    if (lastClaimedTime) {
-      const currentTime = new Date().getTime()
-      const cooldownTime = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
-      const timeElapsed = currentTime - lastClaimedTime
-
-      if (timeElapsed < cooldownTime) {
-        const remainingTime = cooldownTime - timeElapsed
-        const hoursLeft = Math.floor(remainingTime / (1000 * 60 * 60))
-        const minutesLeft = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60))
-        const secondsLeft = Math.floor((remainingTime % (1000 * 60)) / 1000)
-
-        setHours(hoursLeft)
-        setMinutes(minutesLeft)
-        setSeconds(secondsLeft)
-        return false
+  useEffect(() => {
+    let timer
+    // If game is not active, start the countdown with wait
+    const updateTime = () => {
+      if (wait > 0) {
+        wait -= 1000 // Decrease by 1 second (1000 ms)
+        console.log(wait)
+        setHours(Math.floor(wait / 3600000)) // Calculate hours
+        setMinutes(Math.floor((wait % 3600000) / 60000)) // Calculate minutes
+        setSeconds(Math.floor((wait % 60000) / 1000)) // Calculate seconds
+      } else {
+        clearInterval(timer) // Stop the timer when the time is up
       }
+
+      // Start the timer that updates the time every second
+      timer = setInterval(updateTime, 1000)
     }
-    return true
-  }
+
+    // Cleanup interval on component unmount or when gameStatus changes
+    return () => clearInterval(timer)
+  }, [wait])
 
   // Function to claim reward
   const reward = () => {
-    checkRewardCooldown();
+    // checkRewardCooldown()
     localStorage.setItem('lastClaimedTime', new Date().getTime()) // Store the current time
     setShowModal(false)
     setRewardClaim(true)
-    console.log(rewardClaim);
+    console.log(rewardClaim)
   }
 
   // Function to show modal if tapCount is 30
   const showOrNot = () => {
+    handleClaim()
     if (tapCount === 30) {
       setCharacterState('')
       setShowModal(true)
@@ -58,38 +59,12 @@ const Character = ({
     }
   }
 
-  // Timer logic
-  useEffect(() => {
-    const canPlayNow = checkRewardCooldown()
-
-    if (canPlayNow) {
-      const timer = setInterval(() => {
-        setSeconds(prev => {
-          if (prev === 0) {
-            if (minutes === 0 && hours === 0) {
-              clearInterval(timer) // Stop timer when it reaches 0
-              return 0
-            }
-            setMinutes(prevMin => (prevMin === 0 ? 59 : prevMin - 1))
-            if (minutes === 0) {
-              setHours(prevHour => prevHour - 1)
-            }
-            return 59
-          }
-          return prev - 1
-        })
-      }, 1000)
-
-      // Cleanup interval when component unmounts or rewardClaim changes
-      return () => clearInterval(timer)
-    }
-  }, [rewardClaim, minutes, hours])
-
+ 
   return (
     <>
       {showModal && (
         <>
-          <TapsModal setShowModal={setShowModal} reward={reward}  />
+          <TapsModal setShowModal={setShowModal} reward={reward} />
           <div className='overlay bg-transparent-400 z-30 fixed top-0 left-0 min-h-screen w-full'></div>
         </>
       )}
@@ -126,7 +101,9 @@ const Character = ({
                       <p>Sec</p>
                     </div>
                   </div>
-                  <p className='text-center text-white'>You can only play 3 times a day!</p>
+                  <p className='text-center text-white'>
+                    You can only play 3 times a day!
+                  </p>
                 </div>
               ) : (
                 <div className='flex flex-col justify-center items-center gap-5'>
