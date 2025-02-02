@@ -73,18 +73,23 @@ const Main = () => {
   };
 
   useEffect(() => {
-    preloadAssets([
+    const imagesToPreload = [
       chara,
       chara_fly,
       chara_land,
       chara_panic,
       chara_crash,
       chara_dance,
-      logo,
-      tapSound,
-    ]);
-  }, []);
-  
+      logo
+    ]
+
+    imagesToPreload.forEach(src => {
+      const img = new Image()
+      img.src = src
+    });
+    preloadAssets(imagesToPreload)
+  }, []) // Run once on component mount
+
   const loginUser = async () => {
     try {
       const response = await api.post("/auth/login", {
