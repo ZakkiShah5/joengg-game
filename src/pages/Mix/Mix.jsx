@@ -18,6 +18,7 @@ const Mix = () => {
   const mixSound = useRef(new Audio(mixSoundFile))
   const mixSuccessSound = useRef(new Audio(mixSuccessSoundFile))
   const mixFailSound = useRef(new Audio(mixFailSoundFile))
+ 
 
   const playSound = audioRef => {
     if (volume) {

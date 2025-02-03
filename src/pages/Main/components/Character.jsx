@@ -21,6 +21,7 @@ const Character = ({
     let timer
     // If game is not active, start the countdown with wait
     const updateTime = () => {
+      console.log(wait)
       if (wait > 0) {
         wait -= 1000 // Decrease by 1 second (1000 ms)
         console.log(wait)
@@ -51,7 +52,7 @@ const Character = ({
   // Function to show modal if tapCount is 30
   const showOrNot = () => {
     handleClaim()
-    if (tapCount === 30) {
+    if (tapCount === 60) {
       setCharacterState('')
       setShowModal(true)
     } else {
@@ -82,7 +83,7 @@ const Character = ({
           </div>
 
           <div className='relative'>
-            {tapCount === 30 ? (
+            {tapCount === 60 ? (
               rewardClaim ? (
                 <div>
                   <div className='flex items-center justify-between text-white text-center w-[300px] py-3 px-3 rounded-3xl'>
@@ -131,7 +132,7 @@ const Character = ({
                   Claim your Reward in taps it!
                 </p>
                 <div className='bg-mypurple-600 border-4  text-white flex flex-col justify-center items-center w-20 h-20 rounded-full'>
-                  <h1 className='text-3xl font-extrabold'>{30 - tapCount}</h1>
+                  <h1 className='text-3xl font-extrabold'>{61 - tapCount}</h1>
                 </div>
               </div>
             )}

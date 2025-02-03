@@ -1,12 +1,30 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Menu, RightIcons, WithdrawPopup } from '../../components'
 import '../Main/Main.css'
 
 import Character from './components/Character'
+import api from '../../api'
 
 const Wallet = () => {
 
   const [showModal, setShowModal] = useState(false)
+  const [data, setData] = useState(null)
+  const [session, setSession] = useState(localStorage.getItem('authToken'))
+  useEffect(() => {
+    const handleRank = async () => {
+      try {
+        const response = await api.get('/user/profile', {
+          headers: { Authorization: session }
+        })
+        setData(response.data)
+      } catch (error) {
+        console.error('❌ Error :', error)
+        alert('❌ Unexpected error. Please try again later.')
+      }
+    }
+
+    handleRank() // Call the async function
+  }, [session])
 
   return (
     <>
@@ -18,7 +36,7 @@ const Wallet = () => {
       )}
       <RightIcons />
       <div className='bg-main flex flex-col justify-center items-center'>
-        <Character setShowModal={setShowModal} />
+        <Character data={data} setShowModal={setShowModal} />
         <Menu />
       </div>
     </>

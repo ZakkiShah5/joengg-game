@@ -24,7 +24,7 @@ const Main = () => {
   const [logos, setLogos] = useState([])
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
-  const [wait, setWait] = useState(null);
+  const [wait, setWait] = useState(0);
   const [session, setSession] = useState(localStorage.getItem("authToken"));
   const [isLoading, setIsLoading] = useState(() => {
     return localStorage.getItem('hasVisited') ? false : true
@@ -145,7 +145,7 @@ const Main = () => {
   
 
   const handleTap = async (event) => {
-    if (tapCount >= 30 || !session) return;
+    if (tapCount >= 60 || !session) return;
 
     if (volume) {
       const audio = new Audio(tapSound);
@@ -160,7 +160,7 @@ const Main = () => {
     setTapCount(prev => {
       const newTapCount = prev + 1;
 
-      if (newTapCount === 30) {
+      if (newTapCount === 60) {
         setCharacterState('land');
         setTimeout(() => setCharacterState('dance'), 500);
         localStorage.setItem('lastPlayedTime', Date.now().toString());
@@ -177,20 +177,12 @@ const Main = () => {
       console.log("✅ Tap sent successfully!", response.data);
     } catch (error) {
       console.error("❌ Error sending tap:", error.response?.status, error.response?.data);
-
-      // if (error.response?.status === 401) {
-      //   console.log("⚠️ Unauthorized request. Re-authenticating...");
-      //   localStorage.removeItem("authToken");
-      //   await loginUser();
-      // } else {
-      //   alert("❌ Unexpected error. Please check the console for details.");
-      // }
     }
 
     if (inactivityTimer) clearTimeout(inactivityTimer);
 
     const timer = setTimeout(() => {
-      if (tapCount < 29) {
+      if (tapCount < 59) {
         setCharacterState('crash');
         setTimeout(() => setCharacterState('panic'), 1000);
       }
@@ -236,7 +228,7 @@ const Main = () => {
       backgroundPosition:
         characterState === 'panic'
           ? '0px -1680px'
-          : `${tapCount * -14.2}px ${tapCount * 0.067}px`,
+          : `${tapCount * -7.2}px ${tapCount * 0.067}px`,
       transition:
         characterState === 'panic'
           ? 'background-position 100s ease-out'
@@ -251,7 +243,7 @@ const Main = () => {
       alert("⚠️ You must be logged in to claim rewards.");
       return;
     }
-  
+  console.log(wait)
     try {
       // Make the API call to claim the rewards
       const response = await api.post("/game/claim", {}, { headers: { Authorization: session } });
@@ -268,15 +260,25 @@ const Main = () => {
       }
     } catch (error) {
       console.error("❌ Error claiming rewards:", error);
-  
-      // Handle various error cases
+    
+      if (error.response) {
+        console.log("🔍 Error Response Data:", error.response.data);
+        console.log("📡 Status Code:", error.response.status);
+        console.log("📄 Headers:", error.response.headers);
+      } else if (error.request) {
+        console.log("⏳ No Response Received:", error.request);
+      } else {
+        console.log("❗ Request Setup Error:", error.message);
+      }
+    
       if (error.response?.status === 401) {
         console.log("⚠️ Unauthorized request. Re-authenticating...");
-        loginUser(); // Trigger re-authentication if the session is expired or invalid
+        await loginUser(); // Handle re-authentication
       } else {
         alert("❌ Unexpected error. Please try again later.");
       }
     }
+    
   };
   
 
@@ -295,7 +297,7 @@ const Main = () => {
       <div className={`main-container ${isLoading ? 'blur-sm' : ''}`}>
         <div
           className={`preload ${
-            tapCount < 30 ? 'cursor-pointer' : 'cursor-not-allowed'
+            tapCount < 59 ? 'cursor-pointer' : 'cursor-not-allowed'
           }`}
           style={getBackgroundStyle()}
         >
@@ -340,7 +342,7 @@ const Main = () => {
           >
             <div
               className='bg-mypurple-600 rounded-b-2xl transition-all duration-300'
-              style={{ height: `${tapCount * 3.333}%` }}
+              style={{ height: `${tapCount * 1.7}%` }}
             ></div>
           </div>
           <Menu />

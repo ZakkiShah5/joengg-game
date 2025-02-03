@@ -2,7 +2,8 @@ import '../Main/Main.css'
 import { Menu, RightIcons } from '../../components'
 import { FaEdit } from 'react-icons/fa'
 import Form from './components/Form'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import api from '../../api'
 
 import chara1 from '../../assets/characters/1.png'
 import chara2 from '../../assets/characters/2.png'
@@ -31,6 +32,24 @@ const characters = [
 const My = () => {
   const [selectedChara, setSelectedChara] = useState(characters[9]) // Default character is chara10
   const [showCharacters, setShowCharacters] = useState(false)
+  const [data, setData] = useState(null)
+  const [session, setSession] = useState(localStorage.getItem('authToken'))
+  useEffect(() => {
+    const handleRank = async () => {
+      try {
+        const response = await api.get('/user/profile', {
+          headers: { Authorization: session }
+        })
+        setData(response.data)
+        console.log(response.data.data.username)
+      } catch (error) {
+        console.error('❌ Error :', error)
+        alert('❌ Unexpected error. Please try again later.')
+      }
+    }
+
+    handleRank() // Call the async function
+  }, [session])
 
   const handleSelectChara = chara => {
     setSelectedChara(chara)
@@ -57,7 +76,7 @@ const My = () => {
                 <FaEdit />
               </div>
               <h2 className='text-2xl font-medium my-3'>
-                {selectedChara.name}
+                {data ? <>{data.data.username}</>: ""}
               </h2>
             </div>
             <div className='w-56 mx-auto bg-white h-[0.5px]'></div>
