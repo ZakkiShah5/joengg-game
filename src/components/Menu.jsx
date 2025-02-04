@@ -23,7 +23,7 @@ const Menu = () => {
   }
 
   return (
-    <div className=' flex justify-center absolute left-1/2 transform -translate-x-1/2 bottom-2'>
+    <div className=' flex justify-center absolute left-1/2 transform -translate-x-1/2 bottom-0'>
       <nav className='flex text-sm text-center bg-white rounded-md overflow-hidden'>
         <NavLink
           to='/'
