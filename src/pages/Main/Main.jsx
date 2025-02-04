@@ -24,20 +24,20 @@ const Main = () => {
   const [logos, setLogos] = useState([])
   const [characterState, setCharacterState] = useState('idle')
   const [inactivityTimer, setInactivityTimer] = useState(null)
-  const [wait, setWait] = useState(0);
-  const [session, setSession] = useState(localStorage.getItem("authToken"));
+  const [wait, setWait] = useState(0)
+  const [session, setSession] = useState(localStorage.getItem('authToken'))
   const [isLoading, setIsLoading] = useState(() => {
     return localStorage.getItem('hasVisited') ? false : true
   })
   const [canPlay, setCanPlay] = useState(true)
 
   useEffect(() => {
-    if (session) {
-      fetchGameStatus(session);
-    } else {
-      loginUser();
+    const storedSession = localStorage.getItem('authToken')
+    if (storedSession) {
+      setSession(storedSession)
     }
-  }, []);
+    loginUser()
+  }, [])
 
   useEffect(() => {
     const lastPlayed = localStorage.getItem('lastPlayedTime')
@@ -60,17 +60,17 @@ const Main = () => {
     }
   }, [])
 
-  const preloadAssets = (assetList) => {
-    assetList.forEach((src) => {
+  const preloadAssets = assetList => {
+    assetList.forEach(src => {
       if (src.endsWith('.mp3')) {
-        const audio = new Audio(src);
-        audio.load();
+        const audio = new Audio(src)
+        audio.load()
       } else {
-        const img = new Image();
-        img.src = src;
+        const img = new Image()
+        img.src = src
       }
-    });
-  };
+    })
+  }
 
   useEffect(() => {
     const imagesToPreload = [
@@ -86,110 +86,159 @@ const Main = () => {
     imagesToPreload.forEach(src => {
       const img = new Image()
       img.src = src
-    });
+    })
     preloadAssets(imagesToPreload)
   }, []) // Run once on component mount
 
   const loginUser = async () => {
     try {
-      const response = await api.post("/auth/login", {
-        security_code: "joasdf8921kljds",
-        telegram_id: 10,
-      });
-  
-      if (response.data.sessionId) {
-        const sessionId = response.data.sessionId;
-        localStorage.setItem("authToken", sessionId);
-        console.log("✅ Stored New Session ID:", sessionId);
-  
-        fetchGameStatus(); // Fetch game status after logging in
-      } else {
-        console.error("❌ Login failed: No session ID returned.");
-      }
-    } catch (error) {
-      console.error("❌ Login error:", error.response?.data || error.message);
-    }
-  };
-  
-  
-  const fetchGameStatus = async (token) => {
-    try {
-      const response = await api.get("/game/current", {
-        headers: { Authorization: token },
-      });
-  
-      console.log("🔹 Game Status:", response.data);
-  
-      if (response.data.active) {
-        setTapCount(response.data.active.taps);
-      } else {
-        const waitTime = response.data.waitTime;
-        const hours = Math.floor(waitTime / 3600000);
-        const minutes = Math.floor((waitTime % 3600000) / 60000);
-        const seconds = Math.floor((waitTime % 60000) / 1000);
-  
-        setWait(waitTime);
-        alert(`Game is not active. Please wait for: ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`);
-        setCanPlay(false); // Disable playing until the game is active again
-      }
-    } catch (error) {
-      console.error("❌ Error fetching game status:", error.response?.status, error.response?.data);
-  
-      if (error.response?.status === 401 || error.response?.data?.message === "Invalid session ID") {
-        console.log("⚠️ Invalid session detected. Re-authenticating...");
-        loginUser();
-      }
-    }
-  };
-  
-  
+      const response = await api.post('/auth/login', {
+        security_code: 'joasdf8921kljds',
+        telegram_id: 10
+      })
 
-  const handleTap = async (event) => {
-    if (tapCount >= 60 || !session) return;
+      if (response.data.sessionId) {
+        const sessionId = response.data.sessionId
+        localStorage.setItem('authToken', sessionId)
+
+        console.log('✅ Stored New Session ID:', sessionId)
+
+        fetchGameStatus() // Fetch game status after logging in
+      } else {
+        console.error('❌ Login failed: No session ID returned.')
+      }
+    } catch (error) {
+      console.error('❌ Login error:', error.response?.data || error.message)
+    }
+  }
+
+  const fetchGameStatus = async () => {
+    try {
+      const storedSession = session || localStorage.getItem('authToken')
+      if (!storedSession) {
+        console.warn('⚠️ No session available. Logging in...')
+        await loginUser()
+        return
+      }
+
+      // Fetch the current game status
+      const response = await api.get('/game/current', {
+        headers: { Authorization: `Bearer ${storedSession}` }
+      })
+
+      console.log(
+        '🔹 Game Status Response:',
+        JSON.stringify(response.data, null, 2)
+      )
+
+      const { waitTime = 0, active } = response.data || {}
+
+      // 🟡 Case 1: User has made taps but hasn't claimed yet
+      if (active !== null) {
+        console.log('🟢 Game session is active! User can tap or claim.')
+        setCanPlay(true)
+        return
+      }
+
+      // 🟠 Case 2: User must wait before playing again
+      if (waitTime > 0) {
+        console.log(`⏳ Wait Time (ms): ${waitTime}`)
+        setWait(waitTime)
+        alert(`Game is not active. Please wait.`)
+        setCanPlay(false)
+        return
+      }
+
+      // 🟢 Case 3: No active session & no wait time → Ready to tap
+      console.log(
+        '✅ No active session & no wait time. User can start a new round!'
+      )
+      setCanPlay(true)
+    } catch (error) {
+      console.error('❌ Error fetching game status:', error)
+
+      if (error.response) {
+        console.log('🔍 Error Response Data:', error.response.data)
+        console.log('📡 Status Code:', error.response.status)
+
+        if (
+          error.response.status === 401 ||
+          error.response?.data?.message === 'Invalid session ID'
+        ) {
+          console.log('⚠️ Invalid session detected. Re-authenticating...')
+          await loginUser()
+        }
+      } else if (error.request) {
+        console.log('⏳ No Response Received:', error.request)
+      } else {
+        console.log('🚨 Unexpected Error:', error.message)
+      }
+    }
+  }
+
+  const handleTap = async event => {
+    if (tapCount >= 60 || !session) return
 
     if (volume) {
-      const audio = new Audio(tapSound);
-      audio.load();
-      audio.play();
+      const audio = new Audio(tapSound)
+      audio.load()
+      audio.play()
     }
 
-    const { clientX, clientY } = event;
+    const { clientX, clientY } = event
 
-    setLogos(prev => [...prev, { id: Date.now(), x: clientX, y: clientY, isAnimating: true }]);
+    setLogos(prev => [
+      ...prev,
+      { id: Date.now(), x: clientX, y: clientY, isAnimating: true }
+    ])
 
     setTapCount(prev => {
-      const newTapCount = prev + 1;
+      const newTapCount = prev + 1
 
       if (newTapCount === 60) {
-        setCharacterState('land');
-        setTimeout(() => setCharacterState('dance'), 500);
-        localStorage.setItem('lastPlayedTime', Date.now().toString());
-        setCanPlay(false);
+        setCharacterState('land')
+
+        setTimeout(() => setCharacterState('dance'), 500)
+        localStorage.setItem('lastPlayedTime', Date.now().toString())
+        setCanPlay(false)
       } else {
-        setCharacterState('fly');
+        setCharacterState('fly')
       }
 
-      return newTapCount;
-    });
+      const fetchCounts = async () => {
+        if (newTapCount === 60) {
+          try {
+            const response = await api.post(
+              '/game/tap',
+              { taps: 60 },
+              { headers: { Authorization: session } }
+            )
+            console.log('✅ Tap sent successfully!', response.data)
+          } catch (error) {
+            console.error(
+              '❌ Error sending tap:',
+              error.response?.status,
+              error.response?.data
+            )
+          }
+        }
+      }
+      console.log(newTapCount)
+      fetchCounts()
+      return newTapCount
+    })
 
-    try {
-      const response = await api.post("/game/tap", { taps: 1 }, { headers: { Authorization: session } });
-      console.log("✅ Tap sent successfully!", response.data);
-    } catch (error) {
-      console.error("❌ Error sending tap:", error.response?.status, error.response?.data);
-    }
-
-    if (inactivityTimer) clearTimeout(inactivityTimer);
+    if (inactivityTimer) clearTimeout(inactivityTimer)
 
     const timer = setTimeout(() => {
       if (tapCount < 59) {
-        setCharacterState('crash');
-        setTimeout(() => setCharacterState('panic'), 1000);
+        setCharacterState('crash')
+        setTimeout(() => setCharacterState('panic'), 1000)
       }
-    }, 2000);
+    }, 2000)
 
-    setInactivityTimer(timer);
-  };
+    setInactivityTimer(timer)
+  }
 
   useEffect(() => {
     return () => {
@@ -236,51 +285,56 @@ const Main = () => {
     }
   }
 
- 
-  
   const handleClaim = async () => {
     if (!session) {
-      alert("⚠️ You must be logged in to claim rewards.");
-      return;
+      alert('⚠️ You must be logged in to claim rewards.')
+      return
     }
-  console.log(wait)
+
+    if (tapCount < 60) {
+      alert('⚠️ You need at least 60 taps to claim the reward!')
+      return
+    }
+    fetchGameStatus()
     try {
-      // Make the API call to claim the rewards
-      const response = await api.post("/game/claim", {}, { headers: { Authorization: session } });
-  
-      if (response.data.success) {
-        // Reward claimed successfully
-        alert("🎉 Rewards claimed successfully!");
-        setTapCount(0); // Reset tap count after claiming rewards
-      } else if (response.data.error === 'No eligible round to claim') {
-        // Handle case where there is no eligible round
-        alert("❌ No eligible round to claim rewards. Please try again later.");
-      } else {
-        alert("❌ Error claiming rewards. Please try again.");
+      const response = await api.post(
+        '/game/claim',
+        {},
+        { headers: { Authorization: session } }
+      )
+
+      console.log('📩 Claim Response:', response.data)
+
+      if (response.status === 200 && response.data?.success) {
+        alert('🎉 Rewards claimed successfully!')
+        setTapCount(0) // Reset tap count after claiming
+      } else if (response.data?.error) {
+        alert(`❌ ${response.data.error}`)
       }
     } catch (error) {
-      console.error("❌ Error claiming rewards:", error);
-    
+      console.error('❌ Error claiming rewards:', error)
+
       if (error.response) {
-        console.log("🔍 Error Response Data:", error.response.data);
-        console.log("📡 Status Code:", error.response.status);
-        console.log("📄 Headers:", error.response.headers);
+        console.log('🔍 Error Response Data:', error.response.data)
+        console.log('📡 Status Code:', error.response.status)
+
+        if (
+          error.response.status === 401 ||
+          error.response?.data?.message === 'Invalid session ID'
+        ) {
+          console.log('⚠️ Unauthorized request. Re-authenticating...')
+          await loginUser()
+          return
+        }
       } else if (error.request) {
-        console.log("⏳ No Response Received:", error.request);
+        console.log('⏳ No Response Received:', error.request)
       } else {
-        console.log("❗ Request Setup Error:", error.message);
+        console.log('❗Request Setup Error:', error.message)
       }
-    
-      if (error.response?.status === 401) {
-        console.log("⚠️ Unauthorized request. Re-authenticating...");
-        await loginUser(); // Handle re-authentication
-      } else {
-        alert("❌ Unexpected error. Please try again later.");
-      }
+
+      alert('❌ Unexpected error. Please try again later.')
     }
-    
-  };
-  
+  }
 
   const handleAnimationEnd = id => {
     setLogos(prev => prev.filter(logo => logo.id !== id))
@@ -297,7 +351,7 @@ const Main = () => {
       <div className={`main-container ${isLoading ? 'blur-sm' : ''}`}>
         <div
           className={`preload ${
-            tapCount < 59 ? 'cursor-pointer' : 'cursor-not-allowed'
+            tapCount < 60 ? 'cursor-pointer' : 'cursor-not-allowed'
           }`}
           style={getBackgroundStyle()}
         >

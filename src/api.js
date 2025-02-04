@@ -62,6 +62,7 @@ api.interceptors.response.use(
 );
 
 // Login function (called if session is invalid)
+// Login function (called if session is invalid)
 export const loginUser = async () => {
   try {
     console.log("🔄 Attempting login...");

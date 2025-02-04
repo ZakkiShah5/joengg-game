@@ -17,6 +17,7 @@ const Rewards = () => {
           headers: { Authorization: session }
         })
         setData(response.data)
+        console.log(response.data[0].address)
       } catch (error) {
         console.error('❌ Error :', error)
         alert('❌ Unexpected error. Please try again later.')
@@ -32,7 +33,7 @@ const Rewards = () => {
         <div className='w-44 mx-auto text-white text-center'>
           <img src={chara} className='w-full rounded-md' alt='character' />
           {data ? (
-            <h2 className='text-xl my-3'>{data[0].name}</h2>
+            <h2 className='text-xl my-3'>{data.name}</h2>
           ) : (
             <h2 className='text-xl my-3'>Loading...</h2>
           )}

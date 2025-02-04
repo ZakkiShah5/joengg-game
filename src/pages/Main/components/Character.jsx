@@ -46,7 +46,6 @@ const Character = ({
     localStorage.setItem('lastClaimedTime', new Date().getTime()) // Store the current time
     setShowModal(false)
     setRewardClaim(true)
-    console.log(rewardClaim)
   }
 
   // Function to show modal if tapCount is 30
@@ -132,7 +131,7 @@ const Character = ({
                   Claim your Reward in taps it!
                 </p>
                 <div className='bg-mypurple-600 border-4  text-white flex flex-col justify-center items-center w-20 h-20 rounded-full'>
-                  <h1 className='text-3xl font-extrabold'>{61 - tapCount}</h1>
+                  <h1 className='text-3xl font-extrabold'>{60 - tapCount}</h1>
                 </div>
               </div>
             )}

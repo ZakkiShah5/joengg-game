@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import axios from 'axios' // Import Axios for API calls
 import bgImg from '../../../assets/bag/bag.png'
 import star from '../../../assets/bag/star.png'
 import coin from '../../../assets/main/coin.png'
@@ -7,42 +8,76 @@ import plus from '../../../assets/sell/plus.png'
 import minus from '../../../assets/sell/minus.png'
 import coinSound from '../../../assets/sounds/coinsound.mp3'
 import { useMute } from '../../../Context/VolumeContext'
-// what's wrong?
+
 const SellForm = () => {
   const { volume } = useMute()
   const [isAnimating, setIsAnimating] = useState(false)
   const [quantity, setQuantity] = useState(1)
+  const [isLoading, setIsLoading] = useState(false) // Loading state for API call
   const price = 120
   const maxQuantity = 5
+  const userId = 1 // Defined user for testing
+  const belugaLevel = 1 // Example level for conversion
+  const [session, setSession] = useState(localStorage.getItem('authToken'))
 
-  const handleAnimation = e => {
+
+  const handleAnimation = async (e) => {
     e.preventDefault()
+    
+    if (quantity < 5) {
+      alert("Minimum quantity for exchange is 5!")
+      return
+    }
+
     if (volume) {
       const audio = new Audio(coinSound)
       audio.load()
       audio.play()
     }
+
     setIsAnimating(true)
+    setIsLoading(true)
+
+    try {
+      const response = await axios.post(
+        "https://apigame.meccain.com/beluga/convert",
+        {
+          level: belugaLevel,
+          quantity: quantity,
+        },
+        {
+          headers: {
+            Authorization: session, // Replace with valid token
+            "Content-Type": "application/json",
+          },
+        }
+      )
+
+      if (response.status === 200) {
+        alert("Beluga converted successfully!")
+      } else {
+        alert("Conversion failed. Try again!")
+      }
+    } catch (error) {
+      console.error("Error:", error)
+      alert("An error occurred. Please try again.")
+    }
+
     setTimeout(() => {
       setIsAnimating(false)
+      setIsLoading(false)
     }, 1500)
   }
 
   const increaseQuantity = () => {
-    if (quantity < maxQuantity) {
-      setQuantity(quantity + 1)
-    }
+    if (quantity < maxQuantity) setQuantity(quantity + 1)
   }
 
   const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1)
-    }
+    if (quantity > 1) setQuantity(quantity - 1)
   }
 
-  const setMaxQuantity = () => {
-    setQuantity(maxQuantity)
-  }
+  const setMaxQuantity = () => setQuantity(maxQuantity)
 
   return (
     <div className='relative mx-auto py-4 px-4 flex flex-col justify-center items-center gap-2'>
@@ -100,9 +135,10 @@ const SellForm = () => {
         <div className='flex justify-center'>
           <button
             onClick={handleAnimation}
-            className='bg-mypurple-600 py-2 rounded-lg text-white text-2xl font-bold w-10/12'
+            className='bg-mypurple-600 py-2 rounded-lg text-white text-2xl font-bold w-10/12 disabled:opacity-50'
+            disabled={isLoading}
           >
-            Confirm
+            {isLoading ? "Processing..." : "Confirm"}
           </button>
         </div>
       </form>
