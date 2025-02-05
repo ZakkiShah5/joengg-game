@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { IoCopy } from 'react-icons/io5';
 import { PublicKey } from '@solana/web3.js';
 import { PiWarningCircle, PiCheckCircle } from 'react-icons/pi';
 import { SolanaPopup } from '../../../components';
+import { useProfile } from '../../../context/ProfileContext'; // Import the context
 
 const Form = () => {
-  const [name, setName] = useState('');
-  const [solanaAddress, setSolanaAddress] = useState('');
-  const [referralCode, setReferralCode] = useState('');
+  const { profile,updateUserProfile } = useProfile();
+  const [name, setName] = useState(profile.name);
+  const [solanaAddress, setSolanaAddress] = useState(profile.wallet_address);
+  const [referralCode, setReferralCode] = useState(profile.referral_code);
   const [showPopup, setShowPopup] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [session, setSession] = useState(localStorage.getItem('authToken'))
+
 
 
   const validateSolanaAddress = (address) => {
@@ -44,38 +46,17 @@ const Form = () => {
       return;
     }
 
-    const requestBody = {
-      name,
-      wallet_address: solanaAddress,
-      referral_code: referralCode
-    };
+    const updatedData = { name, wallet_address: solanaAddress, referral_code: referralCode };
+    const result = await updateUserProfile(updatedData);
 
-    try {
-      const response = await fetch('https://apigame.meccain.com/user/profile/update', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: session 
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        setMessage('Profile updated successfully!');
-      } else {
-        setMessage(data.message || 'Profile update failed.');
-      }
-    } catch (error) {
-      setMessage('Error updating profile.');
-    } finally {
-      setLoading(false);
-    }
+    console.log(updatedData)
+    setMessage(result.message);
+    setLoading(false);
   };
 
   return (
     <>
-       {showPopup && (
+      {showPopup && (
         <>
           {isValid ? (
             <SolanaPopup
@@ -96,57 +77,57 @@ const Form = () => {
         </>
       )}
 
-      <form onSubmit={handleSubmit} className="text-white text-lg flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className='text-white text-lg flex flex-col gap-1'>
         <div>
-          <label htmlFor="name">Mecca Crew Name</label>
-          <div className="flex items-center text-mypurple-600 bg-white px-2 py-2 rounded-md">
+          <label htmlFor='name'>Mecca Crew Name</label>
+          <div className='flex items-center justify-between text-mypurple-600 bg-white px-1 py-1 rounded-md'>
             <input
-              type="text"
-              id="name"
+              type='text'
+              id='name'
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="outline-none w-full"
-              placeholder="John Smith"
-            />
+              className='outline-none w-full'
+              placeholder='Crew name'
+            /> 
             <FaEdit />
           </div>
         </div>
 
         <div>
-          <label htmlFor="sol">Solana Address</label>
-          <div className="flex items-center text-mypurple-600 bg-white px-2 py-2 rounded-md">
+          <label htmlFor='sol'>Solana Address</label>
+          <div className='flex items-center text-mypurple-600 bg-white px-1 py-1 rounded-md'>
             <input
-              type="text"
-              id="sol"
+              type='text'
+              id='sol'
               value={solanaAddress}
               onChange={(e) => setSolanaAddress(e.target.value)}
               onBlur={handleBlur}
-              className="outline-none w-full"
-              placeholder="Your Solana Address"
+              placeholder='Sol Address'
+              className='outline-none w-full'
             />
             <FaEdit />
           </div>
         </div>
 
         <div>
-          <label htmlFor="referral">Referral Code</label>
-          <div className="flex items-center text-mypurple-600 bg-white px-2 py-2 rounded-md">
+          <label htmlFor='referral'>Referral Code</label>
+          <div className='flex items-center text-mypurple-600 bg-white px-1 py-1 rounded-md'>
             <input
-              type="text"
-              id="referral"
+              type='text'
+              id='referral'
               value={referralCode}
+              placeholder='0x000'
               onChange={(e) => setReferralCode(e.target.value)}
-              className="outline-none w-full"
-              placeholder="0x00000000"
+              className='outline-none w-full'
             />
             <IoCopy />
           </div>
         </div>
 
-        <button type="submit" className="bg-mypurple-600 text-white px-4 py-2 rounded-md mt-4">
+        <button type='submit' className='bg-mypurple-600 text-white px-1 py-1 rounded-md mt-4'>
           {loading ? 'Updating...' : 'Update Profile'}
         </button>
-        {message && <p className="mt-2 text-sm">{message}</p>}
+        {message && <p className='mt-2 text-sm'>{message}</p>}
       </form>
     </>
   );

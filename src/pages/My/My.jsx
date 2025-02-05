@@ -15,6 +15,7 @@ import chara7 from '../../assets/characters/7.png'
 import chara8 from '../../assets/characters/8.png'
 import chara9 from '../../assets/characters/9.png'
 import chara10 from '../../assets/characters/10.png'
+import { useProfile } from '../../Context/ProfileContext'
 
 const characters = [
   { id: 1, name: 'John Smith', img: chara1 },
@@ -34,6 +35,8 @@ const My = () => {
   const [showCharacters, setShowCharacters] = useState(false)
   const [data, setData] = useState(null)
   const [session, setSession] = useState(localStorage.getItem('authToken'))
+  const { updateUserProfile } = useProfile();
+  
   useEffect(() => {
     const handleRank = async () => {
       try {
@@ -41,7 +44,7 @@ const My = () => {
           headers: { Authorization: session }
         })
         setData(response.data)
-        console.log(response.data.data.username)
+        console.log(response.data)
       } catch (error) {
         console.error('❌ Error :', error)
         alert('❌ Unexpected error. Please try again later.')
@@ -49,7 +52,7 @@ const My = () => {
     }
 
     handleRank() // Call the async function
-  }, [session])
+  }, [session, updateUserProfile])
 
   const handleSelectChara = chara => {
     setSelectedChara(chara)
@@ -63,7 +66,7 @@ const My = () => {
         <Menu />
         <section className=''>
           <div className='mb-2'>
-            <div className='w-32 relative mx-auto text-white text-center'>
+            <div className='w-24 relative mx-auto text-white text-center'>
               <img
                 src={selectedChara.img}
                 className='w-full rounded-md'
@@ -99,7 +102,7 @@ const My = () => {
             ))}
           </div>
         ) : (
-          <Form />
+          <Form data={data} />
         )}
       </div>
     </>
