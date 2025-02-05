@@ -1,3 +1,7 @@
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: [
@@ -24,3 +28,4 @@ const config = {
 };
 
 export default config;
+
